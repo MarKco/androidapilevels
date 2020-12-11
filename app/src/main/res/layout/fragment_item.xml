@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/soft_green"
+        android:minHeight="48dp">
+
+        <TextView
+            android:id="@+id/version_number"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/roboto"
+            android:textAppearance="?attr/textAppearanceListItem"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="10" />
+
+        <TextView
+            android:id="@+id/version_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            app:layout_constraintBottom_toTopOf="@+id/further_content"
+            app:layout_constraintEnd_toStartOf="@+id/apiVersion"
+            app:layout_constraintHorizontal_bias="0.21"
+            app:layout_constraintStart_toEndOf="@+id/version_number"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Froyo?" />
+
+        <TextView
+            android:id="@+id/further_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/roboto"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/apiVersion"
+            app:layout_constraintStart_toStartOf="@+id/version_name"
+            tools:text="Android 10 - no official codename - supported not so much. Where do I end?" />
+
+        <TextView
+            android:id="@+id/apiVersion"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/roboto"
+            android:textAppearance="?attr/textAppearanceListItem"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="API 28" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
