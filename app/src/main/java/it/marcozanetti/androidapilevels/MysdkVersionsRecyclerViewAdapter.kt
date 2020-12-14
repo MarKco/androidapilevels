@@ -39,6 +39,9 @@ class MysdkVersionsRecyclerViewAdapter(
             //Alternate color for item rows
             holder.itemView.setBackgroundResource(R.color.soft_yellow_a_bit_darker)
         }
+        else {
+            holder.itemView.setBackgroundResource(R.color.soft_yellow)
+        }
 
         //If the device's API level is included in the levels of the
         //Android version we're drawing, we change the background color
