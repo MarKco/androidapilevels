@@ -7,7 +7,7 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "it.marcozanetti.androidsdkversions"
+        applicationId "it.marcozanetti.androidapilevels"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1

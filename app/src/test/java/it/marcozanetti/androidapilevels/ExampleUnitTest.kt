@@ -1,4 +1,4 @@
-package it.marcozanetti.androidsdkversions
+package it.marcozanetti.androidapilevels
 
 import org.junit.Test
 

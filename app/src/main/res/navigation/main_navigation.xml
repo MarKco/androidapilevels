@@ -6,7 +6,7 @@
     app:startDestination="@id/sdkVersionsFragment">
     <fragment
         android:id="@+id/sdkVersionsFragment"
-        android:name="it.marcozanetti.androidsdkversions.sdkVersionsFragment"
+        android:name="it.marcozanetti.androidapilevels.sdkVersionsFragment"
         android:label="fragment_item_list"
         tools:layout="@layout/fragment_item_list" />
 </navigation>

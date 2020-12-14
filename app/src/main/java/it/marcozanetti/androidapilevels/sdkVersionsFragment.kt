@@ -1,4 +1,4 @@
-package it.marcozanetti.androidsdkversions
+package it.marcozanetti.androidapilevels
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import it.marcozanetti.androidsdkversions.placeholder.SdkVersionContent
+import it.marcozanetti.androidapilevels.placeholder.SdkVersionContent
 
 
 /**

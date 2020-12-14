@@ -1,12 +1,13 @@
-package it.marcozanetti.androidsdkversions
+package it.marcozanetti.androidapilevels
 
+import android.os.Build
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 
-import it.marcozanetti.androidsdkversions.placeholder.SdkVersionContent.SingleSDKversion
-import it.marcozanetti.androidsdkversions.databinding.FragmentItemBinding
+import it.marcozanetti.androidapilevels.placeholder.SdkVersionContent.SingleSDKversion
+import it.marcozanetti.androidapilevels.databinding.FragmentItemBinding
 
 /**
  * [RecyclerView.Adapter] that can display a [SingleSDKversion].
@@ -37,6 +38,13 @@ class MysdkVersionsRecyclerViewAdapter(
         if(position % 2 == 0) {
             //Alternate color for item rows
             holder.itemView.setBackgroundResource(R.color.soft_green_a_bit_darker)
+        }
+
+        //If the device's API level is included in the levels of the
+        //Android version we're drawing, we change the background color
+        if(Build.VERSION.SDK_INT >= item.apiLevelStart
+            && Build.VERSION.SDK_INT <= item.apiLevelEnd) {
+            holder.itemView.setBackgroundResource(R.color.reddish)
         }
     }
 

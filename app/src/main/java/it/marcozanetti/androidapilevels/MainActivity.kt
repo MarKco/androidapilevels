@@ -1,4 +1,4 @@
-package it.marcozanetti.androidsdkversions
+package it.marcozanetti.androidapilevels
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
