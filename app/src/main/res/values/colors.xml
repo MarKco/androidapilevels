@@ -9,8 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="reddish">#EC9494</color>
     <color name="grey">#B6B6B6</color>
-    <color name="soft_green">#CEEFFF</color>
-    <color name="soft_green_a_bit_darker">#C3E7F8</color>
-    <color name="not_so_soft_green">#085D4C</color>
-    <color name="not_so_soft_at_all_green">#013725</color>
+    <color name="soft_yellow">#FAF7E0</color>
+    <color name="soft_yellow_a_bit_darker">#FFF2A6</color>
+    <color name="not_so_soft_purple">#6C0E7F</color>
+    <color name="not_so_soft_at_all_purple">#600772</color>
 </resources>

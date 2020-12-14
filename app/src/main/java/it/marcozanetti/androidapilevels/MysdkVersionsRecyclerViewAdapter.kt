@@ -37,7 +37,7 @@ class MysdkVersionsRecyclerViewAdapter(
 
         if(position % 2 == 0) {
             //Alternate color for item rows
-            holder.itemView.setBackgroundResource(R.color.soft_green_a_bit_darker)
+            holder.itemView.setBackgroundResource(R.color.soft_yellow_a_bit_darker)
         }
 
         //If the device's API level is included in the levels of the
