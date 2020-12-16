@@ -6,15 +6,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 
-import it.marcozanetti.androidapilevels.placeholder.SdkVersionContent.SingleSDKversion
+import it.marcozanetti.androidapilevels.placeholder.APILevelsContent.SingleAndroidVersion
 import it.marcozanetti.androidapilevels.databinding.FragmentItemBinding
 
 /**
- * [RecyclerView.Adapter] that can display a [SingleSDKversion].
+ * [RecyclerView.Adapter] that can display a [SingleAndroidVersion].
  */
-class MysdkVersionsRecyclerViewAdapter(
-    private val values: List<SingleSDKversion>
-) : RecyclerView.Adapter<MysdkVersionsRecyclerViewAdapter.ViewHolder>() {
+class MyAPILevelsRecyclerViewAdapter(
+    private val values: List<SingleAndroidVersion>
+) : RecyclerView.Adapter<MyAPILevelsRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 

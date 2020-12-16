@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import it.marcozanetti.androidapilevels.placeholder.SdkVersionContent
+import it.marcozanetti.androidapilevels.placeholder.APILevelsContent
 
 
 /**
  * A fragment representing a list of Items.
  */
-class sdkVersionsFragment : Fragment() {
+class APILevelsFragment : Fragment() {
 
     private var columnCount = 1
 
@@ -47,7 +47,7 @@ class sdkVersionsFragment : Fragment() {
                     )
                 )
 
-                adapter = MysdkVersionsRecyclerViewAdapter(SdkVersionContent.ITEMS)
+                adapter = MyAPILevelsRecyclerViewAdapter(APILevelsContent.ITEMS)
 
             }
         }
@@ -60,7 +60,7 @@ class sdkVersionsFragment : Fragment() {
 
         @JvmStatic
         fun newInstance(columnCount: Int) =
-            sdkVersionsFragment().apply {
+            APILevelsFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }
