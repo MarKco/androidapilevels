@@ -37,17 +37,17 @@ class MyAPILevelsRecyclerViewAdapter(
 
         if(position % 2 == 0) {
             //Alternate color for item rows
-            holder.itemView.setBackgroundResource(R.color.soft_yellow_a_bit_darker)
+            holder.itemView.setBackgroundResource(R.color.another_row_background)
         }
         else {
-            holder.itemView.setBackgroundResource(R.color.soft_yellow)
+            holder.itemView.setBackgroundResource(R.color.one_row_background)
         }
 
         //If the device's API level is included in the levels of the
         //Android version we're drawing, we change the background color
         if(Build.VERSION.SDK_INT >= item.apiLevelStart
             && Build.VERSION.SDK_INT <= item.apiLevelEnd) {
-            holder.itemView.setBackgroundResource(R.color.reddish)
+            holder.itemView.setBackgroundResource(R.color.emphasize)
         }
     }
 

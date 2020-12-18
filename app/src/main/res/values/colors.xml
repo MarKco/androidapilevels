@@ -6,11 +6,12 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
+    <color name="text_color">#110F12</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="reddish">#EC9494</color>
     <color name="grey">#B6B6B6</color>
-    <color name="soft_yellow">#FAF7E0</color>
-    <color name="soft_yellow_a_bit_darker">#FFF2A6</color>
-    <color name="not_so_soft_purple">#6C0E7F</color>
-    <color name="not_so_soft_at_all_purple">#600772</color>
+    <color name="one_row_background">#DFCDCF</color>
+    <color name="another_row_background">#E5ECE9</color>
+    <color name="emphasize">#FFE099</color>
+    <color name="app_primary">#2660A4</color>
+    <color name="app_secondary">#3993DD</color>
 </resources>
