@@ -1,4 +1,4 @@
-package it.marcozanetti.androidapilevels
+package it.marcozanetti.androidapilevels.apilevelslist.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import it.marcozanetti.androidapilevels.placeholder.APILevelsContent
-
+import it.marcozanetti.androidapilevels.R
+import it.marcozanetti.androidapilevels.apilevelslist.model.APILevelsContent
 
 /**
  * A fragment representing a list of Items.
@@ -47,7 +47,8 @@ class APILevelsFragment : Fragment() {
                     )
                 )
 
-                adapter = MyAPILevelsRecyclerViewAdapter(APILevelsContent.ITEMS)
+                //TODO: Remove depencendy from APILevelsContent, pass in the constructor or setter an object of APILevels interface type
+                adapter = MyAPILevelsRecyclerViewAdapter(APILevelsContent.getAPILevels())
 
             }
         }

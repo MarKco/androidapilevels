@@ -1,12 +1,13 @@
-package it.marcozanetti.androidapilevels
+package it.marcozanetti.androidapilevels.apilevelslist.view
 
 import android.os.Build
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import it.marcozanetti.androidapilevels.R
+import it.marcozanetti.androidapilevels.apilevelslist.model.SingleAndroidVersion
 
-import it.marcozanetti.androidapilevels.placeholder.APILevelsContent.SingleAndroidVersion
 import it.marcozanetti.androidapilevels.databinding.FragmentItemBinding
 
 /**
