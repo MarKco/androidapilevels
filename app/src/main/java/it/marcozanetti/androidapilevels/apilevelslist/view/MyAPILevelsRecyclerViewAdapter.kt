@@ -12,6 +12,8 @@ import it.marcozanetti.androidapilevels.databinding.FragmentItemBinding
 
 /**
  * [RecyclerView.Adapter] that can display a [SingleAndroidVersion].
+ *
+ * Inclues the ViewHolder class
  */
 class MyAPILevelsRecyclerViewAdapter(
     private val values: List<SingleAndroidVersion>

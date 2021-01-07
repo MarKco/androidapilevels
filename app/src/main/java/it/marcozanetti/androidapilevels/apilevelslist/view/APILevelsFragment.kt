@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.marcozanetti.androidapilevels.R
-import it.marcozanetti.androidapilevels.apilevelslist.model.APILevelsContent
+import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModel
+import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModelFactory
 
 /**
  * A fragment representing a list of Items.
@@ -18,6 +20,8 @@ import it.marcozanetti.androidapilevels.apilevelslist.model.APILevelsContent
 class APILevelsFragment : Fragment() {
 
     private var columnCount = 1
+
+    private lateinit var viewModel: ApiLevelsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +37,11 @@ class APILevelsFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_item_list, container, false)
 
+        val application = requireNotNull(activity).application
+        val viewModelFactory = ApiLevelsViewModelFactory(application)
+
+        viewModel = ViewModelProvider(this, viewModelFactory).get(ApiLevelsViewModel::class.java)
+
         // Set the adapter
         if (view is RecyclerView) {
             with(view) {
@@ -47,8 +56,7 @@ class APILevelsFragment : Fragment() {
                     )
                 )
 
-                //TODO: Remove depencendy from APILevelsContent, pass in the constructor or setter an object of APILevels interface type
-                adapter = MyAPILevelsRecyclerViewAdapter(APILevelsContent.getAPILevels())
+                adapter = MyAPILevelsRecyclerViewAdapter(viewModel.getAPILevels())
 
             }
         }
