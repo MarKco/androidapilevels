@@ -3,7 +3,7 @@ package it.marcozanetti.androidapilevels.apilevelslist.model
 /**
  * An item representing a single Android Version
  */
-data class SingleAndroidVersion(
+data class SingleAPILevel(
     val codeName: String,
     val versionNumber: String,
     val releaseDate: String,

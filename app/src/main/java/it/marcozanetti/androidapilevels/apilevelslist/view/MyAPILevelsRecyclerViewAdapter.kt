@@ -6,17 +6,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import it.marcozanetti.androidapilevels.R
-import it.marcozanetti.androidapilevels.apilevelslist.model.SingleAndroidVersion
+import it.marcozanetti.androidapilevels.apilevelslist.model.SingleAPILevel
 
 import it.marcozanetti.androidapilevels.databinding.FragmentItemBinding
 
 /**
- * [RecyclerView.Adapter] that can display a [SingleAndroidVersion].
+ * [RecyclerView.Adapter] that can display a [SingleAPILevel].
  *
  * Inclues the ViewHolder class
  */
 class MyAPILevelsRecyclerViewAdapter(
-    private val values: List<SingleAndroidVersion>
+    private val values: List<SingleAPILevel>
 ) : RecyclerView.Adapter<MyAPILevelsRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
