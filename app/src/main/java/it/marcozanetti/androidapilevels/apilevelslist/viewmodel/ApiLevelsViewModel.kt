@@ -2,10 +2,10 @@ package it.marcozanetti.androidapilevels.apilevelslist.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import it.marcozanetti.androidapilevels.apilevelslist.model.APILevels
-import it.marcozanetti.androidapilevels.apilevelslist.model.APILevelsContent
+import androidx.lifecycle.Observer
+import it.marcozanetti.androidapilevels.apilevelslist.model.APILevelsRepository
+import it.marcozanetti.androidapilevels.apilevelslist.model.APILevelsRepositoryImpl
 import it.marcozanetti.androidapilevels.apilevelslist.model.SingleAPILevel
 
 /**
@@ -15,19 +15,25 @@ import it.marcozanetti.androidapilevels.apilevelslist.model.SingleAPILevel
  */
 class ApiLevelsViewModel(application: Application): AndroidViewModel(application) {
 
-    private var apiLevelItems : MutableList<SingleAPILevel> //The list of API levels
+    var apiLevelItems: MutableLiveData<List<SingleAPILevel>> = MutableLiveData<List<SingleAPILevel>>() //The list of API levels
                                                             //to be displayed
 
-    private var apiLevelItemsProvider: APILevels   //Generic (interface) element providing
+    private lateinit var apiLevelItemsProviderRepository: APILevelsRepository   //Generic (interface) element providing
                                                    //the list of API levels
 
-    init {
-        apiLevelItemsProvider = APILevelsContent
-        apiLevelItems = apiLevelItemsProvider.getAPILevels()
+    private val observerForApiData = Observer<List<SingleAPILevel>>() {
+        apiLevelItems.postValue(apiLevelItemsProviderRepository.apiLevelsList.value)
     }
 
-    fun getAPILevels(): MutableList<SingleAPILevel> {
-        return apiLevelItems
+    fun retrieveApiLevelData() {
+        apiLevelItemsProviderRepository = APILevelsRepositoryImpl
+        apiLevelItemsProviderRepository.getAPILevels()
+
+        apiLevelItemsProviderRepository.apiLevelsList.observeForever(observerForApiData)
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        apiLevelItemsProviderRepository.apiLevelsList.removeObserver(observerForApiData)
+    }
 }

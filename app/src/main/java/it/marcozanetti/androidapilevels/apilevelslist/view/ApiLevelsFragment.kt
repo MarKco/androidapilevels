@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import it.marcozanetti.androidapilevels.R
+import it.marcozanetti.androidapilevels.apilevelslist.model.SingleAPILevel
 import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModel
 import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModelFactory
 import it.marcozanetti.androidapilevels.databinding.ApiLevelsFragmentBinding
@@ -63,7 +64,13 @@ class ApiLevelsFragment : Fragment() {
             )
         )
 
-        binding.list.adapter = MyAPILevelsRecyclerViewAdapter(viewModel.getAPILevels())
+        viewModel.retrieveApiLevelData()    // Asking the ViewModel to get API data
+                                            // (from web and/or from local storage)
+
+        // Once the elements are retrieved by the ViewModel we load them in the adapter
+        viewModel.apiLevelItems.observe(viewLifecycleOwner, Observer {
+                value -> binding.list.adapter = MyAPILevelsRecyclerViewAdapter(value)
+        })
 
         return binding.root
     }
