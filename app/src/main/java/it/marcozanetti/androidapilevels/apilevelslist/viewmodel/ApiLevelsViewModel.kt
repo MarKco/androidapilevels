@@ -15,25 +15,34 @@ import it.marcozanetti.androidapilevels.apilevelslist.model.SingleAPILevel
  */
 class ApiLevelsViewModel(application: Application): AndroidViewModel(application) {
 
-    var apiLevelItems: MutableLiveData<List<SingleAPILevel>> = MutableLiveData<List<SingleAPILevel>>() //The list of API levels
-                                                            //to be displayed
+    /**
+     * The core of the app is
+     * the list of Api Levels to be
+     * displayed in the RecyclerView.
+     */
+    var apiLevelItems: MutableLiveData<List<SingleAPILevel>> = MutableLiveData<List<SingleAPILevel>>()
 
-    private lateinit var apiLevelItemsProviderRepository: APILevelsRepository   //Generic (interface) element providing
-                                                   //the list of API levels
+    private lateinit var apiRepository: APILevelsRepository
 
     private val observerForApiData = Observer<List<SingleAPILevel>>() {
-        apiLevelItems.postValue(apiLevelItemsProviderRepository.apiLevelsList.value)
+        apiLevelItems.postValue(apiRepository.apiLevelsList.value)
     }
 
+    /**
+     * Retrieves data from web page or database
+     */
     fun retrieveApiLevelData() {
-        apiLevelItemsProviderRepository = APILevelsRepositoryImpl
-        apiLevelItemsProviderRepository.getAPILevels()
-
-        apiLevelItemsProviderRepository.apiLevelsList.observeForever(observerForApiData)
+        apiRepository = APILevelsRepositoryImpl()
+        apiRepository.getAPILevels()
+        apiRepository.apiLevelsList.observeForever(observerForApiData)
     }
 
+    /**
+     * Clears the Observers that were instantiated
+     * with ObserveForever in order to prevent memory leaks
+     */
     override fun onCleared() {
         super.onCleared()
-        apiLevelItemsProviderRepository.apiLevelsList.removeObserver(observerForApiData)
+        apiRepository.apiLevelsList.removeObserver(observerForApiData)
     }
 }

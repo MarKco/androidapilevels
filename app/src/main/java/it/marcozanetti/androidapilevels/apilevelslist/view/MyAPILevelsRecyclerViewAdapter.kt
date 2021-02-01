@@ -1,8 +1,10 @@
 package it.marcozanetti.androidapilevels.apilevelslist.view
 
+import android.opengl.Visibility
 import android.os.Build
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import it.marcozanetti.androidapilevels.R
@@ -44,6 +46,12 @@ class MyAPILevelsRecyclerViewAdapter(
         }
         else {
             holder.itemView.setBackgroundResource(R.color.one_row_background)
+        }
+
+        if(item.releaseDate.isEmpty()) {
+            holder.furtherContent.visibility = View.GONE
+        } else {
+            holder.furtherContent.visibility = View.VISIBLE
         }
 
         //If the device's API level is included in the levels of the

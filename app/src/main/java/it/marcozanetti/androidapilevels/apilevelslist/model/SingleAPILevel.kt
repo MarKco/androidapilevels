@@ -6,8 +6,8 @@ package it.marcozanetti.androidapilevels.apilevelslist.model
 data class SingleAPILevel(
     val codeName: String,
     val versionNumber: String,
-    val releaseDate: String,
-    val supported: Boolean,
+    var releaseDate: String,
+    var supported: Boolean,
     val apiLevelStart: Int,
     val apiLevelEnd: Int) {
 
