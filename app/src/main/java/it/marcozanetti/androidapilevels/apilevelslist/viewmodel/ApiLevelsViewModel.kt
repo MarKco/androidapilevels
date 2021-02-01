@@ -2,6 +2,8 @@ package it.marcozanetti.androidapilevels.apilevelslist.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import it.marcozanetti.androidapilevels.apilevelslist.model.APILevels
 import it.marcozanetti.androidapilevels.apilevelslist.model.APILevelsContent
 import it.marcozanetti.androidapilevels.apilevelslist.model.SingleAPILevel

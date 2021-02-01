@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
+@Suppress("UNCHECKED_CAST")
 class ApiLevelsViewModelFactory(
     private val application: Application
 ) : ViewModelProvider.Factory {

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="apiLevelsViewModel"
+            type="it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModel" />
+
+    </data>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/list"
+    android:name="it.marcozanetti.androidsdkversions.sdkVersionsFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="0dp"
+    android:layout_marginRight="0dp"
+    app:layoutManager="LinearLayoutManager"
+    tools:context=".apilevelslist.view.ApiLevelsFragment"
+    tools:listitem="@layout/fragment_item" />
+
+</layout>

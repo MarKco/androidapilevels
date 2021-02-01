@@ -4,20 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import it.marcozanetti.androidapilevels.R
 import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModel
 import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModelFactory
+import it.marcozanetti.androidapilevels.databinding.ApiLevelsFragmentBinding
 
 /**
  * A fragment representing a list of Items.
  */
-class APILevelsFragment : Fragment() {
+class ApiLevelsFragment : Fragment() {
 
     private var columnCount = 1
 
@@ -35,32 +38,34 @@ class APILevelsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_item_list, container, false)
+
+        val binding: ApiLevelsFragmentBinding = DataBindingUtil.inflate(
+            inflater, R.layout.api_levels_fragment, container, false)
+
+        //val view = inflater.inflate(R.layout.fragment_item_list, container, false)
 
         val application = requireNotNull(activity).application
         val viewModelFactory = ApiLevelsViewModelFactory(application)
 
         viewModel = ViewModelProvider(this, viewModelFactory).get(ApiLevelsViewModel::class.java)
 
+        binding.apiLevelsViewModel = viewModel
+
         // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                addItemDecoration(
-                    DividerItemDecoration(
-                        context,
-                        DividerItemDecoration.VERTICAL
-                    )
-                )
-
-                adapter = MyAPILevelsRecyclerViewAdapter(viewModel.getAPILevels())
-
-            }
+        binding.list.layoutManager = when {
+            columnCount <= 1 -> LinearLayoutManager(context)
+            else -> GridLayoutManager(context, columnCount)
         }
-        return view
+        binding.list.addItemDecoration(
+            DividerItemDecoration(
+                context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
+
+        binding.list.adapter = MyAPILevelsRecyclerViewAdapter(viewModel.getAPILevels())
+
+        return binding.root
     }
 
     companion object {
@@ -69,7 +74,7 @@ class APILevelsFragment : Fragment() {
 
         @JvmStatic
         fun newInstance(columnCount: Int) =
-            APILevelsFragment().apply {
+            ApiLevelsFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }
