@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.ybq.android.spinkit.sprite.Sprite
+import com.github.ybq.android.spinkit.style.DoubleBounce
 import it.marcozanetti.androidapilevels.R
 import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModel
 import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModelFactory
@@ -40,9 +42,8 @@ class ApiLevelsFragment : Fragment() {
     ): View? {
 
         val binding: ApiLevelsFragmentBinding = DataBindingUtil.inflate(
-            inflater, R.layout.api_levels_fragment, container, false)
-
-        //val view = inflater.inflate(R.layout.fragment_item_list, container, false)
+            inflater, R.layout.api_levels_fragment, container, false
+        )
 
         val application = requireNotNull(activity).application
         val viewModelFactory = ApiLevelsViewModelFactory(application)
@@ -67,8 +68,10 @@ class ApiLevelsFragment : Fragment() {
                                             // (from web and/or from local storage)
 
         // Once the elements are retrieved by the ViewModel we load them in the adapter
-        viewModel.apiLevelItems.observe(viewLifecycleOwner, Observer {
-                value -> binding.list.adapter = MyAPILevelsRecyclerViewAdapter(value)
+        viewModel.apiLevelItems.observe(viewLifecycleOwner, Observer { value ->
+            binding.list.adapter = MyAPILevelsRecyclerViewAdapter(
+                value
+            )
         })
 
         viewModel.exceptionsWhileRetrieving.observe(viewLifecycleOwner, Observer {

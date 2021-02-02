@@ -74,4 +74,7 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.10.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.8.1'
 
+    /** Progress bar **/
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
 }

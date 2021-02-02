@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -12,6 +13,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.github.ybq.android.spinkit.SpinKitView
+import com.github.ybq.android.spinkit.sprite.Sprite
+import com.github.ybq.android.spinkit.style.DoubleBounce
 import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModel
 import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModelFactory
 
@@ -24,6 +28,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // ProgressBar is instantiated in activity in order to be displayed immediately,
+        // before the Fragment is attached
+        val indeterminateBar = findViewById<SpinKitView>(R.id.indeterminateBar)
+        indeterminateBar.visibility = View.VISIBLE
+        val doubleBounce: Sprite = DoubleBounce()
+        indeterminateBar.setIndeterminateDrawable(doubleBounce)
+
         val viewModelFactory = ApiLevelsViewModelFactory(application)
         mainActivityViewModel = ViewModelProvider(this, viewModelFactory).get(ApiLevelsViewModel::class.java)
 
@@ -34,6 +45,13 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     searchView.setVisibility(SearchView.GONE)
                 }
+            }
+        })
+
+        mainActivityViewModel.apiLevelItems.observe(this, Observer {
+            if(it.isNotEmpty()) {
+                //Once the list is full the progressBar should disappear
+                indeterminateBar.visibility = View.GONE
             }
         })
     }
