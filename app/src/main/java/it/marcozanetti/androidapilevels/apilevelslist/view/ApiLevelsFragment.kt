@@ -8,12 +8,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import it.marcozanetti.androidapilevels.R
-import it.marcozanetti.androidapilevels.apilevelslist.model.SingleAPILevel
 import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModel
 import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModelFactory
 import it.marcozanetti.androidapilevels.databinding.ApiLevelsFragmentBinding
@@ -48,7 +46,7 @@ class ApiLevelsFragment : Fragment() {
         val application = requireNotNull(activity).application
         val viewModelFactory = ApiLevelsViewModelFactory(application)
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(ApiLevelsViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(ApiLevelsViewModel::class.java)
 
         binding.apiLevelsViewModel = viewModel
 

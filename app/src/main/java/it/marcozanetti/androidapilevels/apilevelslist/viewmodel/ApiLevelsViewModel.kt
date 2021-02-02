@@ -21,12 +21,21 @@ class ApiLevelsViewModel(application: Application): AndroidViewModel(application
      * displayed in the RecyclerView.
      */
     var apiLevelItems: MutableLiveData<List<SingleAPILevel>> = MutableLiveData<List<SingleAPILevel>>()
+    var apiLevelItemsRetrieved: MutableLiveData<List<SingleAPILevel>> = MutableLiveData<List<SingleAPILevel>>()
 
     private lateinit var apiRepository: APILevelsRepository
 
-    private val observerForApiData = Observer<List<SingleAPILevel>>() {
-        apiLevelItems.postValue(apiRepository.apiLevelsList.value)
+    private val observerForApiData = Observer<List<SingleAPILevel>> {
+        apiLevelItemsRetrieved.value = it
+        apiLevelItems.value = it
     }
+
+    init {
+        apiLevelItems.value = emptyList()
+        apiLevelItemsRetrieved.value = emptyList()
+    }
+
+    var displaySearchView = MutableLiveData<Boolean>()
 
     /**
      * Retrieves data from web page or database
@@ -44,5 +53,27 @@ class ApiLevelsViewModel(application: Application): AndroidViewModel(application
     override fun onCleared() {
         super.onCleared()
         apiRepository.apiLevelsList.removeObserver(observerForApiData)
+    }
+
+
+    fun resetData() {
+        apiLevelItems.value = apiLevelItemsRetrieved.value
+    }
+
+    /**
+     * Filters APIlevels list based
+     * on the provided query
+     */
+    fun filterData(query: String) {
+        val listOfItems = this.apiLevelItemsRetrieved.value
+
+        if (listOfItems != null) {
+            apiLevelItems.value = listOfItems.filter {
+                it.versionNumber.contains(query, true) ||
+                    it.codeName.contains(query, true)      ||
+                    it.releaseDate.contains(query, true)   ||
+                    it.apiLevelStart.toString().contains(query, true)
+            }
+        }
     }
 }

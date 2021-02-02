@@ -99,7 +99,6 @@ class APILevelsRepositoryImpl: APILevelsRepository {
                             }
                         }
                     }
-                    //retrievedApiLevels = mergeRetrievedListWithDefaultData(retrievedApiLevels, getDefaultData())
                     apiLevelsList.postValue(mergeRetrievedListWithDefaultData(retrievedApiLevels,
                         DefaultDataProvider.getDefaultData()))
                 }

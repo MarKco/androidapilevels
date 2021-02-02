@@ -2,6 +2,11 @@ package it.marcozanetti.androidapilevels.apilevelslist.model
 
 import java.util.ArrayList
 
+/**
+ * The only purpose of this class is to provide
+ * a set of default data for the app in case
+ * connection is down
+ */
 class DefaultDataProvider() {
     companion object {
         fun getDefaultData(): List<SingleAPILevel> {
