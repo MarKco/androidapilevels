@@ -13,6 +13,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.lang.Exception
 import java.net.UnknownHostException
 import java.util.ArrayList
 
@@ -36,6 +37,7 @@ class APILevelsRepositoryImpl: APILevelsRepository {
      * to be propagated to the view
      */
     override val apiLevelsList = MutableLiveData<List<SingleAPILevel>>()
+    override val exceptionsWhileRetrieving = MutableLiveData<Exception>()
 
     override fun getAPILevels() {
         GlobalScope.launch {
@@ -103,11 +105,13 @@ class APILevelsRepositoryImpl: APILevelsRepository {
                         DefaultDataProvider.getDefaultData()))
                 }
                 else {
+                    exceptionsWhileRetrieving.postValue(Exception(response.message()))
                     apiLevelsList.postValue(DefaultDataProvider.getDefaultData())
                 }
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
+                exceptionsWhileRetrieving.postValue(t as Exception)
                 apiLevelsList.postValue(DefaultDataProvider.getDefaultData())
             }
         })

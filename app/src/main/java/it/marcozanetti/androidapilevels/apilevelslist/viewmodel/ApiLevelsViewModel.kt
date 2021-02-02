@@ -25,9 +25,15 @@ class ApiLevelsViewModel(application: Application): AndroidViewModel(application
 
     private lateinit var apiRepository: APILevelsRepository
 
+    var exceptionsWhileRetrieving = MutableLiveData<Exception>()
+
     private val observerForApiData = Observer<List<SingleAPILevel>> {
         apiLevelItemsRetrieved.value = it
         apiLevelItems.value = it
+    }
+
+    private val observerForErrors = Observer<Exception> {
+        exceptionsWhileRetrieving.value = it
     }
 
     init {
@@ -42,8 +48,9 @@ class ApiLevelsViewModel(application: Application): AndroidViewModel(application
      */
     fun retrieveApiLevelData() {
         apiRepository = APILevelsRepositoryImpl()
-        apiRepository.getAPILevels()
         apiRepository.apiLevelsList.observeForever(observerForApiData)
+        apiRepository.exceptionsWhileRetrieving.observeForever(observerForErrors)
+        apiRepository.getAPILevels()
     }
 
     /**
