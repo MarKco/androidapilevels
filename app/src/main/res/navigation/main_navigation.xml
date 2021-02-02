@@ -7,6 +7,6 @@
     <fragment
         android:id="@+id/api_levels_fragment"
         android:name="it.marcozanetti.androidapilevels.apilevelslist.view.ApiLevelsFragment"
-        android:label="ApiLevelsFragment"
+        android:label="Android API Levels"
         tools:layout="@layout/api_levels_fragment" />
 </navigation>

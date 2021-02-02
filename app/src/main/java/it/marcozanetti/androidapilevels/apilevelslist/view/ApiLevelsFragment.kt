@@ -65,7 +65,8 @@ class ApiLevelsFragment : Fragment() {
         })
 
         viewModel.exceptionsWhileRetrieving.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
+            //Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, getString(R.string.error_message_generic), Toast.LENGTH_LONG).show()
         })
 
         return binding.root

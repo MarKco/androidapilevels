@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Android - livelli API</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="next">Avanti</string>
+    <string name="previous">Indietro</string>
+
+    <string name="error_message_generic">Si è verificato un errore durante il recupero dei dati. Verrà visualizzata una lista predefinita che potrebbe non risultare aggiornata.</string>
+</resources>
