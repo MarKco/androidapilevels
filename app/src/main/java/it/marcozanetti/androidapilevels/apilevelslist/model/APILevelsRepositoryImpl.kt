@@ -17,25 +17,10 @@ import java.lang.Exception
 import java.net.UnknownHostException
 import java.util.ArrayList
 
-/**
- * Helper class for providing sample content for user interfaces created by
- * Android template wizards.
- * Pretty much everything is in the companion object, which implements
- * the APILevels interface in order to provide data to the ViewModel.
- *
- * In the MVVM pattern here is the MODEL
- */
 class APILevelsRepositoryImpl: APILevelsRepository {
 
     val WEBSERVICE_BASE_URL = "https://source.android.com/setup/start/build-numbers/?hl=en"
 
-    /**
-     * The core of the app is
-     * the list of Api Levels to be
-     * displayed in the RecyclerView.
-     * The ViewModel observes this variable for changes
-     * to be propagated to the view
-     */
     override val apiLevelsList = MutableLiveData<List<SingleAPILevel>>()
     override val exceptionsWhileRetrieving = MutableLiveData<Exception>()
 
@@ -46,8 +31,6 @@ class APILevelsRepositoryImpl: APILevelsRepository {
     }
 
     fun retrieveAPILevelsFromWeb() {
-        // Hardcoded constant URL of remote page for fetching API Levels
-
         // Building retrofit instance for HTML page retrieval
         val retrofit = Retrofit.Builder()
             .baseUrl(WEBSERVICE_BASE_URL)
@@ -59,6 +42,7 @@ class APILevelsRepositoryImpl: APILevelsRepository {
 
         // Performs call in order to retrieve HTML page
         val call: Call<String> = apiService.getStringResponse()
+
         call.enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 if (response.isSuccessful) {
@@ -76,7 +60,7 @@ class APILevelsRepositoryImpl: APILevelsRepository {
                         // (not the best check in the world, we could surely do better)
                         if (table.children()[0].child(0).child(0).text()
                                 .equals("Codename")
-                        ) {//This is what we expect in the table
+                        ) {
                             // We found the right table!
                             // Let's prepare the list of APILevels to pass to the ViewModel
 

@@ -15,11 +15,6 @@ import it.marcozanetti.androidapilevels.apilevelslist.model.SingleAPILevel
  */
 class ApiLevelsViewModel(application: Application): AndroidViewModel(application) {
 
-    /**
-     * The core of the app is
-     * the list of Api Levels to be
-     * displayed in the RecyclerView.
-     */
     var apiLevelItems: MutableLiveData<List<SingleAPILevel>> = MutableLiveData<List<SingleAPILevel>>()
     var apiLevelItemsRetrieved: MutableLiveData<List<SingleAPILevel>> = MutableLiveData<List<SingleAPILevel>>()
 
@@ -34,11 +29,6 @@ class ApiLevelsViewModel(application: Application): AndroidViewModel(application
 
     private val observerForErrors = Observer<Exception> {
         exceptionsWhileRetrieving.value = it
-    }
-
-    init {
-        apiLevelItems.value = emptyList()
-        apiLevelItemsRetrieved.value = emptyList()
     }
 
     var displaySearchView = MutableLiveData<Boolean>()

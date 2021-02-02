@@ -5,17 +5,19 @@ import org.junit.Test
 
 class APILevelsRepositoryContentTest {
 
-    /** @Test
+    /**
+    @Test
     fun getAPILevels_retrieve_checkNumber() {
         val apiLevels = APILevelsRepositoryImpl.getAPILevels()
         assertEquals(apiLevels.size, 18)
-    } **/
+    }
 
-    /** @Test
+    @Test
     fun getAPILevels_retrieve_checkType() {
         val apiLevels = APILevelsRepositoryImpl.getAPILevels()
-        for(singleAPI in apiLevels) {
+        for (singleAPI in apiLevels) {
             assert(singleAPI is SingleAPILevel)
         }
-    } **/
+    }
+    **/
 }
