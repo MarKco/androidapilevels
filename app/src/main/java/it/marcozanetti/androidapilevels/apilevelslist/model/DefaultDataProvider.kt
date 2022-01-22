@@ -42,7 +42,7 @@ class DefaultDataProvider() {
                     SingleAPILevel("Pie", "9", "August 6, 2018", true, 28, 28),
                     SingleAPILevel("Android10", "10", "September 3, 2019", true, 29, 29),
                     SingleAPILevel("Android11", "11", "September 8, 2020", true, 30, 30),
-                    SingleAPILevel("Android12", "12", "2021", true, 31, 31),
+                    SingleAPILevel("Android12", "12", "October 4, 2021", true, 31, 31),
                 )
 
             return items.sortedWith(compareByDescending({it.apiLevelStart}))
