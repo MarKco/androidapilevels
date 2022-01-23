@@ -1,6 +1,7 @@
 package it.marcozanetti.androidapilevels.apilevelslist.viewmodel
 
 import android.app.Application
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
@@ -11,13 +12,14 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import it.marcozanetti.androidapilevels.apilevelslist.view.ApiLevelsFragment
 import org.junit.Assert.assertEquals
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-/**
-@RunWith(AndroidJUnit4::class)
+
+/*@RunWith(AndroidJUnit4::class)
 class ApiLevelsViewModelTest {
 
     @Test
@@ -61,6 +63,9 @@ class ApiLevelsViewModelTest {
         }
     }
 
+    @get:Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @Test
     fun <T> LiveData<T>.blockingObserve(): T? {
         var value: T? = null
         val latch = CountDownLatch(1)
@@ -75,5 +80,4 @@ class ApiLevelsViewModelTest {
         latch.await(2, TimeUnit.SECONDS)
         return value
     }
-}
-**/
+}*/

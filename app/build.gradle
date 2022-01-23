@@ -75,4 +75,7 @@ dependencies {
 
     /** Progress bar **/
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
+    /** TESTS **/
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
 }
