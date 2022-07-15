@@ -1,7 +1,5 @@
 package it.marcozanetti.androidapilevels.apilevelslist.model
 
-import java.util.ArrayList
-
 /**
  * The only purpose of this class is to provide
  * a set of default data for the app in case
@@ -43,6 +41,7 @@ class DefaultDataProvider() {
                     SingleAPILevel("Android10", "10", "September 3, 2019", true, 29, 29),
                     SingleAPILevel("Android11", "11", "September 8, 2020", true, 30, 30),
                     SingleAPILevel("Android12", "12", "October 4, 2021", true, 31, 31),
+                    SingleAPILevel("Android12L", "12L", "March 7, 2022", true, 32, 32),
                 )
 
             return items.sortedWith(compareByDescending({it.apiLevelStart}))
