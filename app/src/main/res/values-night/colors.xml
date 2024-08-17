@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="one_row_background">#FF6200EE</color>
+    <color name="another_row_background">#FF3700B3</color>
+    <color name="emphasize">#3993DD</color>
+</resources>
