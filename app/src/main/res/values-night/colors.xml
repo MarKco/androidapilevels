@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="one_row_background">#FF6200EE</color>
-    <color name="another_row_background">#FF3700B3</color>
-    <color name="emphasize">#3993DD</color>
+    <!-- Night mode overrides for main theme colors -->
+    <color name="purple_200">#FF424242</color> <!-- dark grey -->
+    <color name="purple_700">#FF1A1A1A</color> <!-- almost black -->
+    <color name="teal_200">#FF156A6A</color> <!-- muted teal -->
+    <color name="black">#FF000000</color>
+    <!-- Custom night mode colors -->
+    <color name="one_row_background">#22272E</color> <!-- dark blue-grey -->
+    <color name="another_row_background">#1A1D23</color> <!-- even darker -->
+    <color name="emphasize">#3993DD</color> <!-- keep as accent, or darken if needed -->
 </resources>
