@@ -46,7 +46,7 @@ class APILevelsRepositoryImpl: APILevelsRepository {
         call.enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 if (response.isSuccessful) {
-                    var responseString = response.body()
+                    var responseString = response.body().orEmpty()
                     val doc: Document =
                         Jsoup.parse(responseString) // Parsing HTML page with Jsoup https://jsoup.org/
 
