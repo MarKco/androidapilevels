@@ -1,0 +1,7 @@
+<resources>
+    <style name="SearchViewEditTextStyle">
+        <item name="android:textColor">@color/app_bar_on_light</item>
+        <item name="android:textColorHint">@color/app_bar_on_light</item>
+    </style>
+</resources>
+

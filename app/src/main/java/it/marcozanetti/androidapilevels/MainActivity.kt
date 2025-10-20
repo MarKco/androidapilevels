@@ -2,11 +2,14 @@ package it.marcozanetti.androidapilevels
 
 import android.app.SearchManager
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.Window
+import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.SearchView
 import androidx.activity.addCallback
@@ -58,9 +61,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             ContextCompat.getColor(this, R.color.status_bar_translucent_dark)
         }
-        val navBarColor = statusBarColor
-        window.statusBarColor = statusBarColor
-        window.navigationBarColor = navBarColor
+        setStatusBarColor(window, statusBarColor)
         Log.d("MainActivity", "Status bar color set: $statusBarColor, isLightTheme: $isLightTheme")
 
         val controller = WindowInsetsControllerCompat(window, window.decorView)
@@ -86,9 +87,9 @@ class MainActivity : AppCompatActivity() {
         mainActivityViewModel.displaySearchView.observe(this, Observer { shouldDisplaySearchView ->
             if (this::searchView.isInitialized) {
                 if (shouldDisplaySearchView) {
-                    searchView.setVisibility(SearchView.VISIBLE)
+                    searchView.visibility = SearchView.VISIBLE
                 } else {
-                    searchView.setVisibility(SearchView.GONE)
+                    searchView.visibility = SearchView.GONE
                 }
             }
         })
@@ -110,6 +111,19 @@ class MainActivity : AppCompatActivity() {
                 onBackPressedDispatcher.onBackPressed()
                 isEnabled = true
             }
+        }
+    }
+
+    fun setStatusBarColor(window: Window, color: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) { // Android 15+
+            window.decorView.setOnApplyWindowInsetsListener { view, insets ->
+                val statusBarInsets = insets.getInsets(WindowInsets.Type.statusBars())
+                view.setBackgroundColor(color)
+                insets
+            }
+        } else {
+            // For Android 14 and below
+            window.statusBarColor = color
         }
     }
 

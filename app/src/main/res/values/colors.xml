@@ -16,4 +16,6 @@
     <color name="app_secondary">#3993DD</color> <!-- keep for brand consistency -->
     <color name="status_bar_translucent_blue">#2660A4</color> <!-- fully opaque blue for status bar -->
     <color name="status_bar_light_blue">#3993DD</color> <!-- lighter blue for status bar in light mode -->
+    <color name="app_bar_on_light">#222222</color> <!-- dark text/icons for light app bar -->
+    <color name="status_bar_translucent_dark">#22272E</color> <!-- fully opaque dark for status bar -->
 </resources>

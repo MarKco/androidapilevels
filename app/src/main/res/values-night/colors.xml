@@ -10,4 +10,5 @@
     <color name="another_row_background">#1A1D23</color> <!-- even darker -->
     <color name="emphasize">#3993DD</color> <!-- keep as accent, or darken if needed -->
     <color name="status_bar_translucent_dark">#22272E</color> <!-- fully opaque dark for status bar -->
+    <color name="app_bar_on_light">#FFFFFF</color> <!-- light text/icons for dark app bar -->
 </resources>
