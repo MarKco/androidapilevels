@@ -14,4 +14,6 @@
     <color name="emphasize">#FFB300</color> <!-- modern yellow accent -->
     <color name="app_primary">#2660A4</color> <!-- keep for brand consistency -->
     <color name="app_secondary">#3993DD</color> <!-- keep for brand consistency -->
+    <color name="status_bar_translucent_blue">#2660A4</color> <!-- fully opaque blue for status bar -->
+    <color name="status_bar_light_blue">#3993DD</color> <!-- lighter blue for status bar in light mode -->
 </resources>

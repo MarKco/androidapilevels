@@ -3,11 +3,18 @@ package it.marcozanetti.androidapilevels
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import android.widget.SearchView
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -27,6 +34,44 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Apply system bar insets as padding to the root container
+        val rootView = findViewById<View>(R.id.container)
+        ViewCompat.setOnApplyWindowInsetsListener(rootView) { v, insets ->
+            val systemInsets = insets.getInsets(
+                androidx.core.view.WindowInsetsCompat.Type.statusBars() or
+                androidx.core.view.WindowInsetsCompat.Type.navigationBars()
+            )
+            v.setPadding(systemInsets.left, systemInsets.top, systemInsets.right, systemInsets.bottom)
+            insets
+        }
+
+        // Enable edge-to-edge (draw behind system bars)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+
+        // Set status bar and navigation bar color and icon appearance
+        val isLightTheme = resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK != android.content.res.Configuration.UI_MODE_NIGHT_YES
+        val statusBarColor = if (isLightTheme) {
+            ContextCompat.getColor(this, R.color.status_bar_light_blue)
+        } else {
+            ContextCompat.getColor(this, R.color.status_bar_translucent_dark)
+        }
+        val navBarColor = statusBarColor
+        window.statusBarColor = statusBarColor
+        window.navigationBarColor = navBarColor
+        Log.d("MainActivity", "Status bar color set: $statusBarColor, isLightTheme: $isLightTheme")
+
+        val controller = WindowInsetsControllerCompat(window, window.decorView)
+        // Set icon appearance after color
+        if (isLightTheme) {
+            controller.isAppearanceLightStatusBars = false // Light icons for blue background
+            controller.isAppearanceLightNavigationBars = false
+        } else {
+            controller.isAppearanceLightStatusBars = true // Dark icons for dark background
+            controller.isAppearanceLightNavigationBars = true
+        }
 
         // ProgressBar is instantiated in activity in order to be displayed immediately,
         // before the Fragment is attached
@@ -54,6 +99,18 @@ class MainActivity : AppCompatActivity() {
                 indeterminateBar.visibility = View.GONE
             }
         })
+
+        // Handle back press using OnBackPressedDispatcher
+        onBackPressedDispatcher.addCallback(this) {
+            if (this@MainActivity::searchView.isInitialized && searchView.isVisible && !searchView.isIconified) {
+                searchView.onActionViewCollapsed()
+            } else {
+                // Call the default back action
+                isEnabled = false
+                onBackPressedDispatcher.onBackPressed()
+                isEnabled = true
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -113,16 +170,6 @@ class MainActivity : AppCompatActivity() {
     }
     override fun onSupportNavigateUp() = findNavController(R.id.nav_host_fragment).navigateUp()
 
-    override fun onBackPressed() {
-        if (this::searchView.isInitialized
-            && searchView.isVisible
-            && !searchView.isIconified) {
-            searchView.onActionViewCollapsed()
-        }
-        else {
-            super.onBackPressed()
-        }
-    }
 
     override fun onStart() {
         super.onStart()

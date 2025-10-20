@@ -9,4 +9,5 @@
     <color name="one_row_background">#22272E</color> <!-- dark blue-grey -->
     <color name="another_row_background">#1A1D23</color> <!-- even darker -->
     <color name="emphasize">#3993DD</color> <!-- keep as accent, or darken if needed -->
+    <color name="status_bar_translucent_dark">#22272E</color> <!-- fully opaque dark for status bar -->
 </resources>
