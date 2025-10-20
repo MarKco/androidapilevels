@@ -59,10 +59,17 @@ class MainActivity : AppCompatActivity() {
         val statusBarColor = if (isLightTheme) {
             ContextCompat.getColor(this, R.color.status_bar_light_blue)
         } else {
-            ContextCompat.getColor(this, R.color.status_bar_translucent_dark)
+            ContextCompat.getColor(this, R.color.status_bar_dark_theme)
         }
         setStatusBarColor(window, statusBarColor)
         Log.d("MainActivity", "Status bar color set: $statusBarColor, isLightTheme: $isLightTheme")
+
+        // Set ActionBar color in dark theme
+        if (!isLightTheme) {
+            supportActionBar?.setBackgroundDrawable(
+                android.graphics.drawable.ColorDrawable(ContextCompat.getColor(this, R.color.action_bar_dark_theme))
+            )
+        }
 
         val controller = WindowInsetsControllerCompat(window, window.decorView)
         // Set icon appearance after color

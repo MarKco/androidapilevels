@@ -18,4 +18,6 @@
     <color name="status_bar_light_blue">#3993DD</color> <!-- lighter blue for status bar in light mode -->
     <color name="app_bar_on_light">#222222</color> <!-- dark text/icons for light app bar -->
     <color name="status_bar_translucent_dark">#22272E</color> <!-- fully opaque dark for status bar -->
+    <color name="status_bar_dark_theme">#FF512DA8</color>
+    <color name="action_bar_dark_theme">#FF512DA8</color>
 </resources>
