@@ -11,7 +11,7 @@
 
         <TextView
             android:id="@+id/version_number"
-            android:layout_width="80dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/roboto"
@@ -23,9 +23,10 @@
 
         <ImageView
             android:id="@+id/version_logo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginHorizontal="8dp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="4dp"
             android:contentDescription="Android version logo"
             tools:src="@drawable/ic_android_kitkat"
             app:layout_constraintBottom_toBottomOf="parent"
