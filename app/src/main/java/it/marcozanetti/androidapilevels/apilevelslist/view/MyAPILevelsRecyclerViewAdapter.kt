@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import it.marcozanetti.androidapilevels.R
 import it.marcozanetti.androidapilevels.apilevelslist.model.SingleAPILevel
@@ -40,6 +41,14 @@ class MyAPILevelsRecyclerViewAdapter(
         holder.furtherContent.text = item.releaseDate
         holder.apiVersion.text = item.getApiText()
 
+        // Set the logo image
+        if (item.logoResourceId != 0) {
+            holder.versionLogo.setImageResource(item.logoResourceId)
+            holder.versionLogo.visibility = View.VISIBLE
+        } else {
+            holder.versionLogo.visibility = View.GONE
+        }
+
         if(position % 2 == 0) {
             //Alternate color for item rows
             holder.itemView.setBackgroundResource(R.color.another_row_background)
@@ -69,6 +78,7 @@ class MyAPILevelsRecyclerViewAdapter(
         val version_name: TextView = binding.versionName
         val furtherContent: TextView = binding.furtherContent
         val apiVersion: TextView = binding.apiVersion
+        val versionLogo: ImageView = binding.versionLogo
 
         override fun toString(): String {
             return super.toString() + " '" + furtherContent.text + "'"

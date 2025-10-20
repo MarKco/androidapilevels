@@ -21,11 +21,22 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="10" />
 
+        <ImageView
+            android:id="@+id/version_logo"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="Android version logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/version_number"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_android_1_0" />
+
         <TextView
             android:id="@+id/version_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
@@ -33,7 +44,7 @@
             app:layout_constraintBottom_toTopOf="@+id/further_content"
             app:layout_constraintEnd_toStartOf="@+id/apiVersion"
             app:layout_constraintHorizontal_bias="0.21"
-            app:layout_constraintStart_toEndOf="@+id/version_number"
+            app:layout_constraintStart_toEndOf="@+id/version_logo"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Froyo?" />
 

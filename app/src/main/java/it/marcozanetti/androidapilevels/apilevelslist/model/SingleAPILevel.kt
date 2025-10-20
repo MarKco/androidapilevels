@@ -9,7 +9,8 @@ data class SingleAPILevel(
     var releaseDate: String,
     var supported: Boolean,
     val apiLevelStart: Int,
-    val apiLevelEnd: Int) {
+    val apiLevelEnd: Int,
+    val logoResourceId: Int = 0) {
 
     override fun toString(): String {
         var stringToPrint = "Android $codeName version $versionNumber released on $releaseDate with API level $apiLevelStart"
