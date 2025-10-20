@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
             controller.isAppearanceLightStatusBars = false // Light icons for blue background
             controller.isAppearanceLightNavigationBars = false
         } else {
-            controller.isAppearanceLightStatusBars = true // Dark icons for dark background
+            controller.isAppearanceLightStatusBars = false // Light icons for dark background
             controller.isAppearanceLightNavigationBars = true
         }
 
