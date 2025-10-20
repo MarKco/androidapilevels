@@ -44,9 +44,6 @@ class MyAPILevelsRecyclerViewAdapter(
         // Set the logo image
         if (item.logoResourceId != 0) {
             holder.versionLogo.setImageResource(item.logoResourceId)
-            holder.versionLogo.visibility = View.VISIBLE
-        } else {
-            holder.versionLogo.visibility = View.GONE
         }
 
         if(position % 2 == 0) {

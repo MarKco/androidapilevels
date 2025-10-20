@@ -114,6 +114,7 @@ class APILevelsRepositoryImpl: APILevelsRepository {
                 with(correspondingItems.first()) {
                     singleApi.releaseDate = this.releaseDate
                     singleApi.supported = this.supported
+                    singleApi.logoResourceId = this.logoResourceId
                 }
             }
         }
