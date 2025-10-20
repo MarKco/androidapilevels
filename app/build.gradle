@@ -11,8 +11,8 @@ android {
         applicationId "it.marcozanetti.androidapilevels"
         minSdkVersion 21
         targetSdkVersion 36
-        versionCode 10
-        versionName "10"
+        versionCode 11
+        versionName "11"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
