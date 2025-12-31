@@ -5,4 +5,11 @@
     <string name="previous">Previous</string>
 
     <string name="error_message_generic">An error occurred while retrieving updated data. Default data will be displayed, please notice it could be not up to date.</string>
+    <string name="supported">Supported</string>
+    <string name="not_supported">Not supported</string>
+    <string name="api_info_title">Android API Info</string>
+    <string name="android_version">Android Version</string>
+    <string name="version_number">Version Number</string>
+    <string name="api_level">API Level</string>
+    <string name="release_date">Release Date</string>
 </resources>

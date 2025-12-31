@@ -6,4 +6,11 @@
     <string name="previous">Indietro</string>
 
     <string name="error_message_generic">Si è verificato un errore durante il recupero dei dati. Verrà visualizzata una lista predefinita che potrebbe non risultare aggiornata.</string>
+    <string name="supported">Supportato</string>
+    <string name="not_supported">Non supportato</string>
+    <string name="api_info_title">Info API Android</string>
+    <string name="android_version">Versione Android</string>
+    <string name="version_number">Numero versione</string>
+    <string name="api_level">Livello API</string>
+    <string name="release_date">Data di rilascio</string>
 </resources>

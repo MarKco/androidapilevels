@@ -61,7 +61,23 @@ class ApiLevelsFragment : Fragment() {
         viewModel.apiLevelItems.observe(viewLifecycleOwner, Observer { value ->
             binding.list.adapter = MyAPILevelsRecyclerViewAdapter(
                 value
-            )
+            ) { apiLevel ->
+                // Show dialog with API info
+                val info = buildString {
+                    append(getString(R.string.android_version)).append(": ").append(apiLevel.codeName).append("\n")
+                    append(getString(R.string.version_number)).append(": ").append(apiLevel.versionNumber).append("\n")
+                    append(getString(R.string.api_level)).append(": ").append(apiLevel.getApiText()).append("\n")
+                    if (apiLevel.releaseDate.isNotEmpty()) {
+                        append(getString(R.string.release_date)).append(": ").append(apiLevel.releaseDate).append("\n")
+                    }
+                    append(if (apiLevel.supported) getString(R.string.supported) else getString(R.string.not_supported))
+                }
+                androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                    .setTitle(getString(R.string.api_info_title))
+                    .setMessage(info)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show()
+            }
         })
 
         viewModel.exceptionsWhileRetrieving.observe(viewLifecycleOwner, Observer {

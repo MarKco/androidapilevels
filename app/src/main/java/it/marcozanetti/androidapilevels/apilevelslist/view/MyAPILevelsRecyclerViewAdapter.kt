@@ -18,7 +18,8 @@ import it.marcozanetti.androidapilevels.databinding.FragmentItemBinding
  * Inclues the ViewHolder class
  */
 class MyAPILevelsRecyclerViewAdapter(
-    private val values: List<SingleAPILevel>
+    private val values: List<SingleAPILevel>,
+    private val onItemClick: (SingleAPILevel) -> Unit
 ) : RecyclerView.Adapter<MyAPILevelsRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -94,6 +95,10 @@ class MyAPILevelsRecyclerViewAdapter(
                 && Build.VERSION.SDK_INT <= item.apiLevelEnd) {
                 holder.itemView.setBackgroundResource(R.color.emphasize)
             }
+        }
+
+        holder.itemView.setOnClickListener {
+            onItemClick(item)
         }
     }
 
