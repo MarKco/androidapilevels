@@ -8,8 +8,8 @@ data class SingleAPILevel(
     val versionNumber: String,
     var releaseDate: String,
     var supported: Boolean,
-    val apiLevelStart: Int,
-    val apiLevelEnd: Int,
+    val apiLevelStart: Float,
+    val apiLevelEnd: Float,
     var logoResourceId: Int = 0) {
 
     override fun toString(): String {
@@ -24,11 +24,15 @@ data class SingleAPILevel(
     }
 
     fun getApiText() : String {
-        var stringToPrint = "API $apiLevelStart"
+        var stringToPrint = "API ${formatApiLevel(apiLevelStart)}"
         if (apiLevelEnd > apiLevelStart) {
-            stringToPrint += "-$apiLevelEnd"
+            stringToPrint += "-${formatApiLevel(apiLevelEnd)}"
         }
 
         return stringToPrint
     }
+
+    // Formats the API level as int if it doesn't have any subversion (es. API 16), keeps the subversion otherwise (es. 16.1)
+    private fun formatApiLevel(level: Float): String =
+        if (level == level.toInt().toFloat()) level.toInt().toString() else level.toString()
 }

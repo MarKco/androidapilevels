@@ -1,7 +1,6 @@
 package it.marcozanetti.androidapilevels.apilevelslist.model
 
 import androidx.lifecycle.MutableLiveData
-import com.google.android.material.snackbar.Snackbar
 import it.marcozanetti.androidapilevels.apilevelslist.model.network.ApiService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -13,9 +12,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import java.lang.Exception
-import java.net.UnknownHostException
-import java.util.ArrayList
 
 class APILevelsRepositoryImpl: APILevelsRepository {
 
@@ -75,10 +71,10 @@ class APILevelsRepositoryImpl: APILevelsRepository {
                                         codeName = children()[0].text(),
                                         apiLevelStart = children()[2].text()
                                             .substringBefore(",").substringAfter("level ")
-                                            .toInt(),
+                                            .toFloat(),
                                         apiLevelEnd = children()[2].text()
                                             .substringBefore(",").substringAfter("level ")
-                                            .toInt(),
+                                            .toFloat(),
                                     )
                                     retrievedApiLevels.add(singleAPILevelToReturn)
                                 }

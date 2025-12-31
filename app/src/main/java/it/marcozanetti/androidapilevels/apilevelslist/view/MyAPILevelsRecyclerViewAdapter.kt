@@ -1,6 +1,6 @@
 package it.marcozanetti.androidapilevels.apilevelslist.view
 
-import android.opengl.Visibility
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -10,7 +10,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import it.marcozanetti.androidapilevels.R
 import it.marcozanetti.androidapilevels.apilevelslist.model.SingleAPILevel
-
 import it.marcozanetti.androidapilevels.databinding.FragmentItemBinding
 
 /**
@@ -34,6 +33,7 @@ class MyAPILevelsRecyclerViewAdapter(
 
     }
 
+    @SuppressLint("WrongConstant")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
         holder.idView.text = item.versionNumber
@@ -60,17 +60,46 @@ class MyAPILevelsRecyclerViewAdapter(
             holder.furtherContent.visibility = View.VISIBLE
         }
 
-        //If the device's API level is included in the levels of the
-        //Android version we're drawing, we change the background color
-        if(Build.VERSION.SDK_INT >= item.apiLevelStart
-            && Build.VERSION.SDK_INT <= item.apiLevelEnd) {
-            holder.itemView.setBackgroundResource(R.color.emphasize)
+        if(Build.VERSION.SDK_INT >= 36) {
+            // From Android 16 api naming changes
+
+            // Use BigDecimal for precision
+            val startApiLevel = item.apiLevelStart.toBigDecimal()
+            val endApiLevel = item.apiLevelEnd.toBigDecimal()
+
+            val startMajorVersion = startApiLevel.setScale(0, java.math.RoundingMode.DOWN).toInt()
+            val startMinorVersion = startApiLevel.subtract(startMajorVersion.toBigDecimal())
+            val startMinorVersionAsInt = (startMinorVersion.multiply(10.toBigDecimal())).toInt()
+
+            val endMajorVersion = endApiLevel.setScale(0, java.math.RoundingMode.DOWN).toInt()
+            val endMinorVersion = endApiLevel.subtract(endMajorVersion.toBigDecimal())
+            val endMinorVersionAsInt = (endMinorVersion.multiply(10.toBigDecimal())).toInt()
+
+            val deviceApiLevel = Build.VERSION.SDK_INT_FULL
+            val deviceApiLevelInt = deviceApiLevel.toInt()
+            val deviceMajorVersion = Build.getMajorSdkVersion(deviceApiLevelInt)
+            val deviceMinorVersion = Build.getMinorSdkVersion(deviceApiLevelInt)
+
+            if(deviceMajorVersion == startMajorVersion && deviceMinorVersion >= startMinorVersionAsInt
+                && deviceMajorVersion == endMajorVersion && deviceMinorVersion <= endMinorVersionAsInt) {
+                holder.itemView.setBackgroundResource(R.color.emphasize)
+            }
+        }
+        else {
+            //In previous Android versions
+
+            //If the device's API level is included in the levels of the
+            //Android version we're drawing, we change the background color
+            if(Build.VERSION.SDK_INT >= item.apiLevelStart
+                && Build.VERSION.SDK_INT <= item.apiLevelEnd) {
+                holder.itemView.setBackgroundResource(R.color.emphasize)
+            }
         }
     }
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(binding: FragmentItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(binding: FragmentItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val idView: TextView = binding.versionNumber
         val version_name: TextView = binding.versionName
         val furtherContent: TextView = binding.furtherContent
