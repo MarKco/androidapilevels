@@ -72,11 +72,16 @@ class ApiLevelsFragment : Fragment() {
                     }
                     append(if (apiLevel.supported) getString(R.string.supported) else getString(R.string.not_supported))
                 }
-                androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
                     .setTitle(getString(R.string.api_info_title))
                     .setMessage(info)
                     .setPositiveButton(android.R.string.ok, null)
-                    .show()
+                if (apiLevel.logoResourceId != 0) {
+                    dialogBuilder.setIcon(apiLevel.logoResourceId)
+                } else {
+                    dialogBuilder.setIcon(R.mipmap.ic_launcher)
+                }
+                dialogBuilder.show()
             }
         })
 
