@@ -36,9 +36,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge.Emphasized"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
                     android:gravity="center_horizontal"
                     tools:text="10" />
 
@@ -47,8 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textColor="@color/black"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                     android:gravity="center_horizontal"
                     tools:text="API 28" />
 
@@ -58,8 +56,6 @@
                 android:id="@+id/version_logo"
                 android:layout_width="62dp"
                 android:layout_height="62dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
                 android:contentDescription="@string/android_version_logo_desc"
                 android:layout_gravity="center_vertical"
                 tools:src="@drawable/ic_android_kitkat" />
@@ -86,21 +82,15 @@
                     android:id="@+id/further_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
                     android:fontFamily="@font/roboto"
-                    android:gravity="center"
+                    android:gravity="center_horizontal"
                     tools:text="Android 10 due date" />
 
                 <TextView
                     android:id="@+id/apiName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
                     android:fontFamily="@font/roboto"
-                    android:textAppearance="?attr/textAppearanceListItem"
                     android:gravity="center_horizontal"
                     android:ellipsize="end"
                     android:maxLines="2"
