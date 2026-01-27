@@ -41,6 +41,7 @@ class MyAPILevelsRecyclerViewAdapter(
         holder.version_name.text = item.codeName
         holder.furtherContent.text = item.releaseDate
         holder.apiVersion.text = item.getApiText()
+        holder.apiName.text = getApiNameForLevel(item.apiLevelStart)
 
         // Set the logo image
         if (item.logoResourceId != 0) {
@@ -110,10 +111,24 @@ class MyAPILevelsRecyclerViewAdapter(
         val furtherContent: TextView = binding.furtherContent
         val apiVersion: TextView = binding.apiVersion
         val versionLogo: ImageView = binding.versionLogo
+        val apiName: TextView = binding.apiName
 
         override fun toString(): String {
             return super.toString() + " '" + furtherContent.text + "'"
         }
+    }
+
+    private fun getApiNameForLevel(apiLevel: Float): String {
+        val apiLevelInt = apiLevel.toInt()
+        val fields = Build.VERSION_CODES::class.java.fields
+        for (field in fields) {
+            try {
+                if (field.type == Int::class.javaPrimitiveType && field.getInt(null) == apiLevelInt) {
+                    return field.name
+                }
+            } catch (_: Exception) {}
+        }
+        return "?"
     }
 
 }
