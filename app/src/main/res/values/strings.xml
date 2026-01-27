@@ -12,4 +12,5 @@
     <string name="version_number">Version Number</string>
     <string name="api_level">API Level</string>
     <string name="release_date">Release Date</string>
+    <string name="android_version_logo_desc">Android version logo</string>
 </resources>

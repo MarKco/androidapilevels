@@ -3,93 +3,108 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/one_row_background"
-        android:minHeight="60dp">
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@color/white">
 
-        <TextView
-            android:id="@+id/version_number"
-            android:layout_width="60dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/roboto"
-            android:textAppearance="?attr/textAppearanceListItem"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="10" />
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:background="@color/one_row_background"
+            android:minHeight="60dp">
 
-        <ImageView
-            android:id="@+id/version_logo"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="4dp"
-            android:contentDescription="Android version logo"
-            tools:src="@drawable/ic_android_kitkat"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/version_number"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/version_name" />
+            <ImageView
+                android:id="@+id/version_logo"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="4dp"
+                android:contentDescription="@string/android_version_logo_desc"
+                tools:src="@drawable/ic_android_kitkat"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/version_number_name_group"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/api_column" />
 
-        <TextView
-            android:id="@+id/version_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:textAppearance="?attr/textAppearanceListItem"
-            app:layout_constraintBottom_toTopOf="@+id/further_content"
-            app:layout_constraintEnd_toStartOf="@+id/api_column"
-            app:layout_constraintHorizontal_bias="0.21"
-            app:layout_constraintStart_toEndOf="@+id/version_logo"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Froyo?" />
+            <LinearLayout
+                android:id="@+id/version_number_name_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
 
-        <TextView
-            android:id="@+id/further_content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="@font/roboto"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/api_column"
-            app:layout_constraintStart_toStartOf="@+id/version_name"
-            tools:text="Android 10 - no official codename - supported not so much. Where do I end?" />
+                <TextView
+                    android:id="@+id/version_number"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:gravity="center_horizontal"
+                    tools:text="10" />
 
-        <LinearLayout
-            android:id="@+id/api_column"
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+                <TextView
+                    android:id="@+id/version_name"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:gravity="center_horizontal"
+                    tools:text="Froyo?" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/apiName"
-                android:layout_width="match_parent"
+                android:id="@+id/further_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
                 android:fontFamily="@font/roboto"
-                android:textAppearance="?attr/textAppearanceListItem"
-                android:gravity="center_horizontal"
-                tools:text="Q" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/api_column"
+                app:layout_constraintStart_toEndOf="@+id/version_logo"
+                tools:text="Android 10 - no official codename - supported not so much. Where do I end?" />
 
-            <TextView
-                android:id="@+id/apiVersion"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/api_column"
+                android:layout_width="90dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto"
-                android:textAppearance="?attr/textAppearanceListItem"
-                android:gravity="center_horizontal"
-                tools:text="API 28" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                android:orientation="vertical"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/apiName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="@font/roboto"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:gravity="center_horizontal"
+                    tools:text="Q" />
+
+                <TextView
+                    android:id="@+id/apiVersion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:gravity="center_horizontal"
+                    tools:text="API 28" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </layout>

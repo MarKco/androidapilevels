@@ -47,12 +47,6 @@ class ApiLevelsFragment : Fragment() {
             columnCount <= 1 -> LinearLayoutManager(context)
             else -> GridLayoutManager(context, columnCount)
         }
-        binding.list.addItemDecoration(
-            DividerItemDecoration(
-                context,
-                DividerItemDecoration.VERTICAL
-            )
-        )
 
         viewModel.retrieveApiLevelData()    // Asking the ViewModel to get API data
                                             // (from web and/or from local storage)
