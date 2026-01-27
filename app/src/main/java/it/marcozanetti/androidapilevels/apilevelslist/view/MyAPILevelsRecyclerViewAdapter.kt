@@ -34,14 +34,14 @@ class MyAPILevelsRecyclerViewAdapter(
 
     }
 
-    @SuppressLint("WrongConstant")
+    @SuppressLint("WrongConstant", "SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
         holder.idView.text = item.versionNumber
         holder.version_name.text = item.codeName
         holder.furtherContent.text = item.releaseDate
         holder.apiVersion.text = item.getApiText()
-        holder.apiName.text = getApiNameForLevel(item.apiLevelStart)
+        holder.apiName.text = if(getApiNameForLevel(item.apiLevelStart) != "?") { getApiNameForLevel(item.apiLevelStart) } else "No API name"
 
         // Set the logo image
         if (item.logoResourceId != 0) {

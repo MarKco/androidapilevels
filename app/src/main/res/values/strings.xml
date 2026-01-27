@@ -13,4 +13,5 @@
     <string name="api_level">API Level</string>
     <string name="release_date">Release Date</string>
     <string name="android_version_logo_desc">Android version logo</string>
+    <string name="api_name_label">ApiName: </string>
 </resources>
