@@ -1,60 +1,56 @@
 package it.marcozanetti.androidapilevels.apilevelslist.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import it.marcozanetti.androidapilevels.apilevelslist.model.DefaultDataProvider
 import it.marcozanetti.androidapilevels.apilevelslist.model.APILevelsRepository
 import it.marcozanetti.androidapilevels.apilevelslist.model.APILevelsRepositoryImpl
 import it.marcozanetti.androidapilevels.apilevelslist.model.SingleAPILevel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * ViewModel class. It retrieves data from the Model class (any class implementing APILevels
  * interface), passes them to the fragment view via the getAPILevels method.
  * Doesn't yet implement LiveData and/or Events
  */
-class ApiLevelsViewModel(application: Application): AndroidViewModel(application) {
+class ApiLevelsViewModel(
+    private val repository: APILevelsRepository = APILevelsRepositoryImpl()
+) : ViewModel() {
+    var apiLevelItems by mutableStateOf<List<SingleAPILevel>>(emptyList())
+        private set
+    var apiLevelItemsRetrieved by mutableStateOf<List<SingleAPILevel>>(emptyList())
+        private set
 
-    var apiLevelItems: MutableLiveData<List<SingleAPILevel>> = MutableLiveData<List<SingleAPILevel>>()
-    var apiLevelItemsRetrieved: MutableLiveData<List<SingleAPILevel>> = MutableLiveData<List<SingleAPILevel>>()
+    var exceptionsWhileRetrieving: Exception? = null
+        private set
 
-    private lateinit var apiRepository: APILevelsRepository
-
-    var exceptionsWhileRetrieving = MutableLiveData<Exception>()
-
-    private val observerForApiData = Observer<List<SingleAPILevel>> {
-        apiLevelItemsRetrieved.value = it
-        apiLevelItems.value = it
-    }
-
-    private val observerForErrors = Observer<Exception> {
-        exceptionsWhileRetrieving.value = it
-    }
-
-    var displaySearchView = MutableLiveData<Boolean>()
+    var displaySearchView by mutableStateOf(false)
+        private set
 
     /**
      * Retrieves data from web page or database
      */
     fun retrieveApiLevelData() {
-        apiRepository = APILevelsRepositoryImpl()
-        apiRepository.apiLevelsList.observeForever(observerForApiData)
-        apiRepository.exceptionsWhileRetrieving.observeForever(observerForErrors)
-        apiRepository.getAPILevels()
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val data = repository.getAPILevelsCompose()
+                apiLevelItemsRetrieved = data
+                apiLevelItems = data
+            } catch (e: Exception) {
+                exceptionsWhileRetrieving = e
+                val fallback = DefaultDataProvider.getDefaultData()
+                apiLevelItemsRetrieved = fallback
+                apiLevelItems = fallback
+            }
+        }
     }
-
-    /**
-     * Clears the Observers that were instantiated
-     * with ObserveForever in order to prevent memory leaks
-     */
-    override fun onCleared() {
-        super.onCleared()
-        apiRepository.apiLevelsList.removeObserver(observerForApiData)
-    }
-
 
     fun resetData() {
-        apiLevelItems.value = apiLevelItemsRetrieved.value
+        apiLevelItems = apiLevelItemsRetrieved
     }
 
     /**
@@ -62,10 +58,11 @@ class ApiLevelsViewModel(application: Application): AndroidViewModel(application
      * on the provided query
      */
     fun filterData(query: String) {
-        val listOfItems = this.apiLevelItemsRetrieved.value
-
-        if (listOfItems != null) {
-            apiLevelItems.value = listOfItems.filter {
+        val listOfItems = this.apiLevelItemsRetrieved
+        apiLevelItems = if (query.isBlank()) {
+            listOfItems
+        } else {
+            listOfItems.filter {
                 it.versionNumber.contains(query, true) ||
                     it.codeName.contains(query, true)      ||
                     it.releaseDate.contains(query, true)   ||

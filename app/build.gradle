@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'org.jetbrains.kotlin.plugin.compose' version '2.0.0'
     id 'com.google.devtools.ksp'
 }
 
@@ -18,8 +19,10 @@ android {
     }
 
     buildFeatures {
-        dataBinding true
-        viewBinding true
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.10"
     }
 
     buildTypes {
@@ -46,33 +49,31 @@ android {
 }
 
 dependencies {
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.17.0'
-    implementation 'androidx.appcompat:appcompat:1.7.1'
-    implementation 'com.google.android.material:material:1.13.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.4.0'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.3.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
-
-    // Navigation
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.9.6'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.9.6'
-
-    /** Retrofit and Moshi for JSON parsing **/
+    // Compose
+    implementation "androidx.activity:activity-compose:1.8.2"
+    implementation "androidx.compose.ui:ui:1.5.4"
+    implementation "androidx.compose.material:material:1.5.4"
+    implementation "androidx.compose.ui:ui-tooling-preview:1.5.4"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.2"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2"
+    implementation "androidx.navigation:navigation-compose:2.7.7"
+    debugImplementation "androidx.compose.ui:ui-tooling:1.5.4"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:1.5.4"
+    implementation "androidx.compose.compiler:compiler:1.5.10"
+    // Networking
     implementation "com.squareup.retrofit2:retrofit:3.0.0"
     implementation "com.squareup.retrofit2:converter-moshi:3.0.0"
     ksp 'com.squareup.moshi:moshi-kotlin-codegen:1.15.2'
     implementation 'com.squareup.retrofit2:converter-scalars:3.0.0'
     implementation 'org.jsoup:jsoup:1.21.2'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.3.2'
-
-    /** Progress bar **/
+    // Progress bar (SpinKit) - optional, if used in Compose
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
-
-    /** TESTS **/
+    // TESTS
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
     androidTestImplementation "androidx.arch.core:core-testing:2.2.0"
 }

@@ -1,120 +1,69 @@
 package it.marcozanetti.androidapilevels.apilevelslist.model
 
-import androidx.lifecycle.MutableLiveData
 import it.marcozanetti.androidapilevels.apilevelslist.model.network.ApiService
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-import org.jsoup.select.Elements
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
-class APILevelsRepositoryImpl: APILevelsRepository {
+class APILevelsRepositoryImpl : APILevelsRepository {
+    private val WEBSERVICE_BASE_URL = "https://source.android.com/setup/start/build-numbers/?hl=en"
 
-    val WEBSERVICE_BASE_URL = "https://source.android.com/setup/start/build-numbers/?hl=en"
-
-    override val apiLevelsList = MutableLiveData<List<SingleAPILevel>>()
-    override val exceptionsWhileRetrieving = MutableLiveData<Exception>()
-
-    override fun getAPILevels() {
-        GlobalScope.launch {
-            retrieveAPILevelsFromWeb()
-        }
-    }
-
-    fun retrieveAPILevelsFromWeb() {
-        // Building retrofit instance for HTML page retrieval
-        val retrofit = Retrofit.Builder()
-            .baseUrl(WEBSERVICE_BASE_URL)
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .build()
-
-        // Very simple API service for retrieving single web page
-        val apiService = retrofit.create(ApiService::class.java)
-
-        // Performs call in order to retrieve HTML page
-        val call: Call<String> = apiService.getStringResponse()
-
-        call.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                if (response.isSuccessful) {
-                    var responseString = response.body().orEmpty()
-                    val doc: Document =
-                        Jsoup.parse(responseString) // Parsing HTML page with Jsoup https://jsoup.org/
-
-                    // Fetching all the tables in the page
-                    val tables: Elements = doc.getElementsByTag("table")
-
-                    var retrievedApiLevels = ArrayList<SingleAPILevel>()
-
-                    for (table in tables) {
-                        // The table we want is the one that starts with the first column labeled "Codename"
-                        // (not the best check in the world, we could surely do better)
-                        if (table.children()[0].child(0).child(0).text()
-                                .equals("Codename")
-                        ) {
-                            // We found the right table!
-                            // Let's prepare the list of APILevels to pass to the ViewModel
-
-                            //We cycle through all table rows except the header
-                            for (singleApiLevelRetrieved in table.children()[1].children()) {
-                                with(singleApiLevelRetrieved) {
-                                    // Parsing HTML elements in a SingleApiLevel object
-                                    val singleAPILevelToReturn = SingleAPILevel(
-                                        versionNumber = children()[1].text(),
-                                        supported = true,
-                                        releaseDate = "",
-                                        codeName = children()[0].text(),
-                                        apiLevelStart = children()[2].text()
-                                            .substringBefore(",").substringAfter("level ")
-                                            .toFloat(),
-                                        apiLevelEnd = children()[2].text()
-                                            .substringBefore(",").substringAfter("level ")
-                                            .toFloat(),
-                                    )
-                                    retrievedApiLevels.add(singleAPILevelToReturn)
-                                }
+    override suspend fun getAPILevelsCompose(): List<SingleAPILevel> = withContext(Dispatchers.IO) {
+        try {
+            val retrofit = Retrofit.Builder()
+                .baseUrl(WEBSERVICE_BASE_URL)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build()
+            val apiService = retrofit.create(ApiService::class.java)
+            val response = apiService.getStringResponse().execute()
+            if (response.isSuccessful) {
+                val responseString = response.body().orEmpty()
+                val doc = Jsoup.parse(responseString)
+                val tables = doc.getElementsByTag("table")
+                val retrievedApiLevels = ArrayList<SingleAPILevel>()
+                for (table in tables) {
+                    if (table.children()[0].child(0).child(0).text() == "Codename") {
+                        for (singleApiLevelRetrieved in table.children()[1].children()) {
+                            with(singleApiLevelRetrieved) {
+                                val singleAPILevelToReturn = SingleAPILevel(
+                                    versionNumber = children()[1].text(),
+                                    supported = true,
+                                    releaseDate = "",
+                                    codeName = children()[0].text(),
+                                    apiLevelStart = children()[2].text().substringBefore(",").substringAfter("level ").toFloat(),
+                                    apiLevelEnd = children()[2].text().substringBefore(",").substringAfter("level ").toFloat(),
+                                )
+                                retrievedApiLevels.add(singleAPILevelToReturn)
                             }
                         }
                     }
-                    apiLevelsList.postValue(mergeRetrievedListWithDefaultData(retrievedApiLevels,
-                        DefaultDataProvider.getDefaultData()))
                 }
-                else {
-                    exceptionsWhileRetrieving.postValue(Exception(response.message()))
-                    apiLevelsList.postValue(DefaultDataProvider.getDefaultData())
+                return@withContext DefaultDataProvider.getDefaultData().let { defaultList ->
+                    mergeRetrievedListWithDefaultData(retrievedApiLevels, defaultList)
                 }
+            } else {
+                return@withContext DefaultDataProvider.getDefaultData()
             }
-
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                exceptionsWhileRetrieving.postValue(t as Exception)
-                apiLevelsList.postValue(DefaultDataProvider.getDefaultData())
-            }
-        })
+        } catch (e: Exception) {
+            return@withContext DefaultDataProvider.getDefaultData()
+        }
     }
 
-    /**
-     * Google official page doesn't provide much information.
-     * Here we merge those data with default data included in app
-     */
-    fun mergeRetrievedListWithDefaultData(retrievedList: ArrayList<SingleAPILevel>,
-                                          defaultList: List<SingleAPILevel>): ArrayList<SingleAPILevel> {
-
-        for(singleApi in retrievedList) {
-            val correspondingItems = defaultList.filter{ it.versionNumber == singleApi.versionNumber }
-            if(correspondingItems.isNotEmpty()) {
+    private fun mergeRetrievedListWithDefaultData(retrievedList: ArrayList<SingleAPILevel>,
+                                                  defaultList: List<SingleAPILevel>): ArrayList<SingleAPILevel> {
+        for (singleApi in retrievedList) {
+            val correspondingItems = defaultList.filter { it.versionNumber == singleApi.versionNumber }
+            if (correspondingItems.isNotEmpty()) {
                 with(correspondingItems.first()) {
                     singleApi.releaseDate = this.releaseDate
                     singleApi.supported = this.supported
                     singleApi.logoResourceId = this.logoResourceId
+                    singleApi.apiName = this.apiName
                 }
             }
         }
-
         return retrievedList
     }
 
