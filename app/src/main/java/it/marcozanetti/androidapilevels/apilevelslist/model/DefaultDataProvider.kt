@@ -19,7 +19,7 @@ class DefaultDataProvider() {
                     SingleAPILevel("Eclair", "2.0", "October 26, 2009", false, 5f, 5f, R.drawable.ic_android_eclair, apiName = "ECLAIR"),
                     SingleAPILevel("Eclair", "2.0.1", "December 3, 2009", false, 6f, 6f, R.drawable.ic_android_eclair, apiName = "ECLAIR_0_1"),
                     SingleAPILevel("Eclair", "2.1", "January 12, 2010", false, 7f, 7f, R.drawable.ic_android_eclair, apiName = "ECLAIR_MR1"),
-                    SingleAPILevel("Froyo", "2.2", "May 20, 2010", false, 8f, 8f, R.drawable.ic_android_froyo, apiName = "FROYO"),
+                    SingleAPILevel("Froyo", "2.2.x", "September 21, 2010", false, 8f, 8f, R.drawable.ic_android_froyo, apiName = "FROYO"),
                     SingleAPILevel("Gingerbread", "2.3 - 2.3.2", "December 6, 2010", false, 9f, 9f, R.drawable.ic_android_gingerbread, apiName = "GINGERBREAD"),
                     SingleAPILevel("Gingerbread", "2.3.3 - 2.3.7", "February 9, 2011", false, 10f, 10f, R.drawable.ic_android_gingerbread, apiName = "GINGERBREAD_MR1"),
                     SingleAPILevel("Honeycomb", "3.0", "February 22, 2011", false, 11f, 11f, R.drawable.ic_android_honeycomb, apiName = "HONEYCOMB"),
