@@ -8,10 +8,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidSDKVersions">
-        <activity android:name=".MainActivity"
-            android:exported="true">
-            <!-- MainActivity is deprecated, no launcher intent -->
-        </activity>
         <activity android:name=".ui.MainActivityCompose"
             android:exported="true">
             <intent-filter>

@@ -1,0 +1,12 @@
+<resources>
+    <color name="app_primary">#818CF8</color>
+    <color name="app_secondary">#94A3B8</color>
+    <color name="one_row_background">#F8FAFC</color>
+    <color name="another_row_background">#FFFFFF</color>
+    <color name="emphasize">#F59E0B</color>
+    <color name="primary_text">#222222</color>
+    <color name="secondary_text">#666666</color>
+    <color name="accent">#F59E0B</color>
+    <color name="status_bar_translucent_dark">#E0E0E0</color>
+    <color name="app_bar_on_light">#222222</color>
+</resources>

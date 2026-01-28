@@ -20,9 +20,9 @@ import kotlinx.coroutines.launch
 class ApiLevelsViewModel(
     private val repository: APILevelsRepository = APILevelsRepositoryImpl()
 ) : ViewModel() {
-    var apiLevelItems by mutableStateOf<List<SingleAPILevel>>(emptyList())
+    var apiLevelItems by mutableStateOf<List<SingleAPILevel>>(DefaultDataProvider.getDefaultData())
         private set
-    var apiLevelItemsRetrieved by mutableStateOf<List<SingleAPILevel>>(emptyList())
+    var apiLevelItemsRetrieved by mutableStateOf<List<SingleAPILevel>>(DefaultDataProvider.getDefaultData())
         private set
 
     var exceptionsWhileRetrieving: Exception? = null
@@ -30,6 +30,11 @@ class ApiLevelsViewModel(
 
     var displaySearchView by mutableStateOf(false)
         private set
+
+    init {
+        // Show default data immediately, then fetch remote data in background
+        retrieveApiLevelData()
+    }
 
     /**
      * Retrieves data from web page or database
@@ -42,9 +47,9 @@ class ApiLevelsViewModel(
                 apiLevelItems = data
             } catch (e: Exception) {
                 exceptionsWhileRetrieving = e
-                val fallback = DefaultDataProvider.getDefaultData()
-                apiLevelItemsRetrieved = fallback
-                apiLevelItems = fallback
+                // Keep showing default data
+                apiLevelItemsRetrieved = DefaultDataProvider.getDefaultData()
+                apiLevelItems = DefaultDataProvider.getDefaultData()
             }
         }
     }
