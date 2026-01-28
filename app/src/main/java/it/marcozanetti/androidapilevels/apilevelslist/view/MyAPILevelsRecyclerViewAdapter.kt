@@ -41,7 +41,12 @@ class MyAPILevelsRecyclerViewAdapter(
         holder.version_name.text = item.codeName
         holder.furtherContent.text = item.releaseDate
         holder.apiVersion.text = item.getApiText()
-        holder.apiName.text = if(getApiNameForLevel(item.apiLevelStart) != "?") { getApiNameForLevel(item.apiLevelStart) } else "No API name"
+// Change these lines in onBindViewHolder:
+        holder.apiName.text = if (getApiNameForLevel(item.apiLevelStart.toFloat()) != "?") {
+            getApiNameForLevel(item.apiLevelStart.toFloat())
+        } else {
+            "No API name"
+        }
 
         // Set the logo image
         if (item.logoResourceId != 0) {

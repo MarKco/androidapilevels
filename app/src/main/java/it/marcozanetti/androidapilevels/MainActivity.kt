@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -38,14 +39,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
+            insets
+        }
+
         // Apply system bar insets as padding to the root container
         val rootView = findViewById<View>(R.id.container)
         ViewCompat.setOnApplyWindowInsetsListener(rootView) { v, insets ->
-            val systemInsets = insets.getInsets(
-                androidx.core.view.WindowInsetsCompat.Type.statusBars() or
-                androidx.core.view.WindowInsetsCompat.Type.navigationBars()
-            )
-            v.setPadding(systemInsets.left, systemInsets.top, systemInsets.right, systemInsets.bottom)
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            // We only apply bottom padding here for the navigation bar, 
+            // and side padding for landscape/cutouts.
+            // Top padding is NOT applied because the container is below the Toolbar in a LinearLayout.
+            v.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
             insets
         }
 
@@ -194,6 +202,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
         val navController = findNavController(R.id.nav_host_fragment)
         setupActionBarWithNavController(navController)

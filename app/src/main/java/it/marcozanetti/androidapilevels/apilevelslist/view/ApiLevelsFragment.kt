@@ -16,6 +16,7 @@ import it.marcozanetti.androidapilevels.R
 import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModel
 import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModelFactory
 import it.marcozanetti.androidapilevels.databinding.ApiLevelsFragmentBinding
+import androidx.core.view.ViewCompat
 
 /**
  * A fragment representing a list of Items.
@@ -39,8 +40,14 @@ class ApiLevelsFragment : Fragment() {
         val viewModelFactory = ApiLevelsViewModelFactory(application)
 
         viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(ApiLevelsViewModel::class.java)
-
         binding.apiLevelsViewModel = viewModel
+
+        // Apply top and bottom window insets as padding to the RecyclerView
+        ViewCompat.setOnApplyWindowInsetsListener(binding.list) { v, insets ->
+            val systemInsets = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars())
+            v.setPadding(v.paddingLeft, systemInsets.top, v.paddingRight, systemInsets.bottom)
+            insets
+        }
 
         // Set the adapter
         binding.list.layoutManager = when {

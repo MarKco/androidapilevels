@@ -1,16 +1,27 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.AndroidSDKVersions" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.AndroidSDKVersions" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/app_primary</item>
+        <item name="colorPrimaryContainer">@color/one_row_background</item>
+        <item name="colorOnPrimary">@color/primary_text</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/accent</item>
+        <item name="colorSecondaryContainer">@color/another_row_background</item>
+        <item name="colorOnSecondary">@color/primary_text</item>
+        <!-- Card and background -->
+        <item name="android:colorBackground">@color/another_row_background</item>
+        <item name="colorSurface">@color/one_row_background</item>
+        <item name="colorOnSurface">@color/primary_text</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/status_bar_translucent_dark</item>
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/primary_text</item>
+        <item name="android:textColorSecondary">@color/secondary_text</item>
+        <!-- CardView background -->
+        <item name="cardViewStyle">@style/CustomCardView</item>
+    </style>
+    <style name="CustomCardView" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">@color/one_row_background</item>
     </style>
 </resources>

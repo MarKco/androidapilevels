@@ -4,15 +4,18 @@
     <color name="purple_200">#FF424242</color> <!-- dark grey -->
     <color name="purple_700">#FF1A1A1A</color> <!-- almost black -->
     <color name="teal_200">#FF156A6A</color> <!-- muted teal -->
-    <color name="black">#FF000000</color>
+    <color name="black">#FFFAFAFA</color> <!-- light text for dark bg -->
+    <color name="white">#FF23272B</color> <!-- card bg -->
     <!-- Custom night mode colors -->
-    <color name="one_row_background">#22272E</color> <!-- dark blue-grey -->
-    <color name="another_row_background">#1A1D23</color> <!-- even darker -->
-<!--    <color name="emphasize">#3993DD</color> &lt;!&ndash; keep as accent, or darken if needed &ndash;&gt;-->
+    <color name="one_row_background">#23272B</color> <!-- card bg -->
+    <color name="another_row_background">#181C1F</color> <!-- main bg -->
     <color name="emphasize">#C89710</color> <!-- modern yellow accent -->
-    <color name="app_primary">#FFC107</color> <!-- keep for brand consistency -->
-    <color name="status_bar_translucent_dark">#22272E</color> <!-- fully opaque dark for status bar -->
-    <color name="app_bar_on_light">#FFFFFF</color> <!-- light text/icons for dark app bar -->
+    <color name="app_primary">#80CBC4</color> <!-- teal accent -->
+    <color name="status_bar_translucent_dark">#181C1F</color>
+    <color name="app_bar_on_light">#FFFFFF</color>
     <color name="status_bar_dark_theme">#FF512DA8</color>
     <color name="action_bar_dark_theme">#FF512DA8</color>
+    <color name="primary_text">#FFFAFAFA</color>
+    <color name="secondary_text">#B0B8C1</color>
+    <color name="accent">#80CBC4</color>
 </resources>
