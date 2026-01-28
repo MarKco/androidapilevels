@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Night mode overrides for main theme colors -->
-    <color name="purple_200">#FF424242</color> <!-- dark grey -->
-    <color name="purple_700">#FF1A1A1A</color> <!-- almost black -->
-    <color name="teal_200">#FF156A6A</color> <!-- muted teal -->
-    <color name="black">#FFFAFAFA</color> <!-- light text for dark bg -->
-    <color name="white">#FF23272B</color> <!-- card bg -->
+    <color name="purple_200">#312E81</color> <!-- Indigo 900 -->
+    <color name="purple_500">#6366F1</color> <!-- Indigo 500 -->
+    <color name="purple_700">#4338CA</color> <!-- Indigo 700 -->
+    <color name="teal_200">#38BDF8</color> <!-- Sky 400 -->
+    <color name="teal_700">#0369A1</color> <!-- Sky 700 -->
+    <color name="black">#F8FAFC</color> <!-- Slate 50 (used for text) -->
+    <color name="white">#1E293B</color> <!-- Slate 800 (used for surface) -->
+
     <!-- Custom night mode colors -->
-    <color name="one_row_background">#23272B</color> <!-- card bg -->
-    <color name="another_row_background">#181C1F</color> <!-- main bg -->
-    <color name="emphasize">#C89710</color> <!-- modern yellow accent -->
-    <color name="app_primary">#80CBC4</color> <!-- teal accent -->
-    <color name="status_bar_translucent_dark">#181C1F</color>
-    <color name="app_bar_on_light">#FFFFFF</color>
-    <color name="status_bar_dark_theme">#FF512DA8</color>
-    <color name="action_bar_dark_theme">#FF512DA8</color>
-    <color name="primary_text">#FFFAFAFA</color>
-    <color name="secondary_text">#B0B8C1</color>
-    <color name="accent">#80CBC4</color>
+    <color name="one_row_background">#1E293B</color> <!-- Slate 800 (Card/Surface) -->
+    <color name="another_row_background">#0F172A</color> <!-- Slate 900 (Main BG) -->
+    <color name="emphasize">#F59E0B</color> <!-- Amber 500 -->
+    <color name="app_primary">#818CF8</color> <!-- Indigo 400 (Better for dark mode primary) -->
+    <color name="app_secondary">#94A3B8</color> <!-- Slate 400 -->
+    
+    <color name="status_bar_translucent_dark">#0F172A</color>
+    <color name="app_bar_on_light">#F8FAFC</color>
+    
+    <color name="primary_text">#F8FAFC</color>
+    <color name="secondary_text">#94A3B8</color>
+    <color name="accent">#F59E0B</color>
+    
+    <color name="status_bar_dark_theme">#0F172A</color>
+    <color name="action_bar_dark_theme">#1E293B</color>
 </resources>
