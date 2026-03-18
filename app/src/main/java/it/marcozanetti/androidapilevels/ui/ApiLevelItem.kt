@@ -13,12 +13,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,103 +30,112 @@ import androidx.compose.ui.unit.dp
 import it.marcozanetti.androidapilevels.apilevelslist.model.SingleAPILevel
 
 @Composable
-fun ApiLevelItem(item: SingleAPILevel, onClick: () -> Unit) {
+fun ApiLevelItem(
+    item: SingleAPILevel,
+    onClick: () -> Unit,
+    isCurrentLevel: Boolean = false
+) {
     val statusText = if (item.supported) "Supported" else "No updates"
     val logoSize = 48.dp
-
+    val highlightColor = lerp(MaterialTheme.colors.surface, MaterialTheme.colors.secondary, 0.15f)
+    val backgroundColor = if (isCurrentLevel) highlightColor else MaterialTheme.colors.surface
+    val contentColor = MaterialTheme.colors.onSurface
     Card(
         shape = RoundedCornerShape(16.dp),
         elevation = 2.dp,
+        backgroundColor = backgroundColor,
+        border = null, // Nessun bordo
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 6.dp)
-            .clip(RoundedCornerShape(16.dp)) // Clip ripple ai bordi arrotondati
             .clickable { onClick() }
     ) {
-        Row(
-            modifier = Modifier.padding(12.dp),
-            verticalAlignment = Alignment.Top
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(logoSize),
-                contentAlignment = Alignment.Center
+        CompositionLocalProvider(LocalContentColor provides contentColor) {
+            Row(
+                modifier = Modifier.padding(12.dp),
+                verticalAlignment = Alignment.Top
             ) {
-                if (item.logoResourceId != 0) {
-                    Image(
-                        painter = painterResource(id = item.logoResourceId),
-                        contentDescription = null,
-                        modifier = Modifier.size(48.dp),
-                        contentScale = ContentScale.Fit
-                    )
-                } else {
-                    Text(
-                        text = item.versionNumber,
-                        style = MaterialTheme.typography.caption,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 1
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.width(12.dp))
-
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
+                Box(
+                    modifier = Modifier
+                        .size(logoSize),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = item.codeName,
-                        style = MaterialTheme.typography.body1,
-                        fontWeight = FontWeight.SemiBold,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.weight(1f)
-                    )
-                    Card(
-                        shape = RoundedCornerShape(50),
-                        backgroundColor = if (item.supported) {
-                            MaterialTheme.colors.primary.copy(alpha = 0.14f)
-                        } else {
-                            MaterialTheme.colors.onSurface.copy(alpha = 0.10f)
-                        },
-                        elevation = 0.dp
-                    ) {
+                    if (item.logoResourceId != 0) {
+                        Image(
+                            painter = painterResource(id = item.logoResourceId),
+                            contentDescription = null,
+                            modifier = Modifier.size(48.dp),
+                            contentScale = ContentScale.Fit
+                        )
+                    } else {
                         Text(
-                            text = statusText,
+                            text = item.versionNumber,
                             style = MaterialTheme.typography.caption,
-                            color = if (item.supported) MaterialTheme.colors.primary else MaterialTheme.colors.onSurface,
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1
                         )
                     }
                 }
 
-                Text(
-                    text = "Android ${item.versionNumber} - ${item.getApiText()}",
-                    style = MaterialTheme.typography.body2,
-                    fontWeight = FontWeight.Medium
-                )
+                Spacer(modifier = Modifier.width(12.dp))
 
-                if (item.releaseDate.isNotEmpty()) {
-                    Text(
-                        text = item.releaseDate,
-                        style = MaterialTheme.typography.caption,
-                        color = MaterialTheme.colors.onSurface.copy(alpha = 0.75f),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = item.codeName,
+                            style = MaterialTheme.typography.body1,
+                            fontWeight = FontWeight.SemiBold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Card(
+                            shape = RoundedCornerShape(50),
+                            backgroundColor = if (item.supported) {
+                                MaterialTheme.colors.primary.copy(alpha = 0.14f)
+                            } else {
+                                MaterialTheme.colors.onSurface.copy(alpha = 0.10f)
+                            },
+                            elevation = 0.dp
+                        ) {
+                            Text(
+                                text = statusText,
+                                style = MaterialTheme.typography.caption,
+                                color = if (item.supported) MaterialTheme.colors.primary else MaterialTheme.colors.onSurface,
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
+                            )
+                        }
+                    }
 
-                item.apiName?.let {
                     Text(
-                        text = it,
-                        style = MaterialTheme.typography.caption,
-                        color = MaterialTheme.colors.onSurface.copy(alpha = 0.75f)
+                        text = "Android ${item.versionNumber} - ${item.getApiText()}",
+                        style = MaterialTheme.typography.body2,
+                        fontWeight = FontWeight.Medium
                     )
+
+                    if (item.releaseDate.isNotEmpty()) {
+                        Text(
+                            text = item.releaseDate,
+                            style = MaterialTheme.typography.caption,
+                            color = MaterialTheme.colors.onSurface.copy(alpha = 0.75f),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+
+                    item.apiName?.let {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.caption,
+                            color = MaterialTheme.colors.onSurface.copy(alpha = 0.75f)
+                        )
+                    }
                 }
             }
         }

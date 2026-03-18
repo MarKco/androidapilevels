@@ -20,7 +20,8 @@ import androidx.compose.ui.unit.dp
 fun ApiLevelsListScreen(
     viewModel: ApiLevelsViewModel = viewModel(factory = ApiLevelsViewModelFactory()),
     modifier: Modifier = Modifier,
-    onItemClick: (SingleAPILevel) -> Unit = {}
+    onItemClick: (SingleAPILevel) -> Unit = {},
+    currentApiLevel: Int = -1
 ) {
     val uiState by viewModel.uiState.collectAsState()
     LazyColumn(
@@ -29,7 +30,8 @@ fun ApiLevelsListScreen(
         contentPadding = PaddingValues(top = 12.dp, bottom = 24.dp)
     ) {
         items(uiState.items, key = { it.apiLevelStart }) { item ->
-            ApiLevelItem(item = item, onClick = { onItemClick(item) })
+            val isCurrent = item.apiLevelStart % 1 == 0f && item.apiLevelStart.toInt() == currentApiLevel
+            ApiLevelItem(item = item, onClick = { onItemClick(item) }, isCurrentLevel = isCurrent)
         }
     }
 }

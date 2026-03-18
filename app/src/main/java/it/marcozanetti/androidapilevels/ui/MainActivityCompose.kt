@@ -1,5 +1,6 @@
 package it.marcozanetti.androidapilevels.ui
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -44,6 +45,7 @@ fun MainScreen() {
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
+    val currentApiLevel = Build.VERSION.SDK_INT
 
     LaunchedEffect(isSearching) {
         if (isSearching) {
@@ -130,7 +132,8 @@ fun MainScreen() {
         content = { padding ->
             ApiLevelsListScreen(
                 viewModel = viewModel,
-                modifier = Modifier.padding(padding)
+                modifier = Modifier.padding(padding),
+                currentApiLevel = currentApiLevel
             )
         }
     )
