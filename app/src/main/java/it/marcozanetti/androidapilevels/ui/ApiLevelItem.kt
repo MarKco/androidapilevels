@@ -53,7 +53,7 @@ fun ApiLevelItem(
         CompositionLocalProvider(LocalContentColor provides contentColor) {
             Row(
                 modifier = Modifier.padding(12.dp),
-                verticalAlignment = Alignment.Top
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
                     modifier = Modifier
