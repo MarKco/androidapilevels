@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModel
+import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModelFactory
 import it.marcozanetti.androidapilevels.ui.theme.AndroidAPILevelsTheme
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -35,7 +36,7 @@ class MainActivityCompose : ComponentActivity() {
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MainScreen() {
-    val viewModel: ApiLevelsViewModel = viewModel()
+    val viewModel: ApiLevelsViewModel = viewModel(factory = ApiLevelsViewModelFactory())
     val uiState by viewModel.uiState.collectAsState()
     var isSearching by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }

@@ -12,12 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.marcozanetti.androidapilevels.apilevelslist.model.SingleAPILevel
 import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModel
+import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModelFactory
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun ApiLevelsListScreen(
-    viewModel: ApiLevelsViewModel = viewModel(),
+    viewModel: ApiLevelsViewModel = viewModel(factory = ApiLevelsViewModelFactory()),
     modifier: Modifier = Modifier,
     onItemClick: (SingleAPILevel) -> Unit = {}
 ) {
@@ -25,7 +26,7 @@ fun ApiLevelsListScreen(
     LazyColumn(
         modifier = modifier
             .fillMaxSize(),
-        contentPadding = PaddingValues(top = 12.dp, bottom = 12.dp)
+        contentPadding = PaddingValues(top = 12.dp, bottom = 24.dp)
     ) {
         items(uiState.items, key = { it.apiLevelStart }) { item ->
             ApiLevelItem(item = item, onClick = { onItemClick(item) })
