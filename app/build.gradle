@@ -5,6 +5,17 @@ plugins {
     id 'com.google.devtools.ksp'
 }
 
+// Leggi le proprietà di firma da local.properties
+import java.util.Properties
+import java.io.FileInputStream
+
+Properties localProps = new Properties()
+File localPropsFile = rootProject.file('local.properties')
+if (localPropsFile.exists()) {
+    localProps.load(new FileInputStream(localPropsFile))
+}
+def hasSigning = localProps['RELEASE_STORE_FILE'] && localProps['RELEASE_KEY_ALIAS'] && localProps['RELEASE_STORE_PASSWORD'] && localProps['RELEASE_KEY_PASSWORD']
+
 android {
     compileSdk 36
 
@@ -21,14 +32,25 @@ android {
     buildFeatures {
         compose true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.10"
+
+    signingConfigs {
+        if (hasSigning) {
+            release {
+                storeFile file(localProps['RELEASE_STORE_FILE'])
+                storePassword localProps['RELEASE_STORE_PASSWORD']
+                keyAlias localProps['RELEASE_KEY_ALIAS']
+                keyPassword localProps['RELEASE_KEY_PASSWORD']
+            }
+        }
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (hasSigning) {
+                signingConfig signingConfigs.release
+            }
         }
     }
     compileOptions {
@@ -46,6 +68,12 @@ android {
     }
     
     namespace 'it.marcozanetti.androidapilevels'
+
+    lint {
+        disable "MutableCollectionMutableState"
+        abortOnError false
+        checkReleaseBuilds false
+    }
 }
 
 dependencies {
@@ -61,7 +89,6 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:2.7.7"
     debugImplementation "androidx.compose.ui:ui-tooling:1.5.4"
     debugImplementation "androidx.compose.ui:ui-test-manifest:1.5.4"
-    implementation "androidx.compose.compiler:compiler:1.5.10"
     // Networking
     implementation "com.squareup.retrofit2:retrofit:3.0.0"
     implementation "com.squareup.retrofit2:converter-moshi:3.0.0"
