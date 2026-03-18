@@ -17,7 +17,8 @@ def main() -> None:
         DRAWABLE_DIR = RES_DIR / "drawable"
         DRAWABLE_V26_DIR = RES_DIR / "drawable-v26"
         DRAWABLE_NODPI_DIR = RES_DIR / "drawable-nodpi"
-        FONT_PATH = RES_DIR / "font" / "roboto.ttf"
+#         FONT_PATH = RES_DIR / "font" / "roboto.ttf"
+        FONT_PATH = RES_DIR / "font" / "montserrat_bold.ttf"
         LEVELS = list(range(23, 37))
         ICON_SIZE = 432
         SAFE_AREA_DP = 72
