@@ -27,6 +27,7 @@ import androidx.compose.ui.focus.focusRequester
 class MainActivityCompose : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        LauncherIconManager.updateLauncherIcon(this)
         setContent {
             AndroidAPILevelsTheme {
                 MainScreen()
