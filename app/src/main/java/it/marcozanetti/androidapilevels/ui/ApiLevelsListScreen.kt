@@ -6,6 +6,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -16,11 +18,12 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun ApiLevelsListScreen(
     viewModel: ApiLevelsViewModel = viewModel(),
+    modifier: Modifier = Modifier,
     onItemClick: (SingleAPILevel) -> Unit = {}
 ) {
-    val apiLevelItems = viewModel.apiLevelItems
-    LazyColumn(modifier = Modifier.fillMaxSize().background(Color.White)) {
-        items(apiLevelItems) { item ->
+    val uiState by viewModel.uiState.collectAsState()
+    LazyColumn(modifier = modifier.fillMaxSize().background(Color.White)) {
+        items(uiState.items, key = { it.apiLevelStart }) { item ->
             ApiLevelItem(item = item, onClick = { onItemClick(item) })
         }
     }
@@ -36,9 +39,11 @@ fun ApiLevelsListScreenPreview() {
     )
     Surface {
         LazyColumn(modifier = Modifier.fillMaxSize().background(Color.White)) {
-            items(items) { item ->
+            items(items, key = { it.apiLevelStart }) { item ->
                 ApiLevelItem(item = item, onClick = {})
             }
         }
     }
 }
+
+

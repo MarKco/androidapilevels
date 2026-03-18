@@ -7,10 +7,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModel
-import androidx.compose.ui.Alignment
-import androidx.compose.material.TopAppBar
 import androidx.compose.ui.graphics.Color
 
 class MainActivityCompose : ComponentActivity() {
@@ -25,27 +24,37 @@ class MainActivityCompose : ComponentActivity() {
 @Composable
 fun MainScreen() {
     val viewModel: ApiLevelsViewModel = viewModel()
-    val apiLevelItems = viewModel.apiLevelItems
-    val isLoading = apiLevelItems.isEmpty()
+    val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Android API Levels", color = Color.White) },
                 backgroundColor = Color(0xFF222222),
-                contentColor = Color.White
+                contentColor = Color.White,
+                actions = {
+                    // Spinner visible while the network fetch is in flight.
+                    // The list is always shown (populated with local data) so
+                    // the user is never staring at a blank screen.
+                    if (uiState.isLoading) {
+                        CircularProgressIndicator(
+                            color = Color.White,
+                            strokeWidth = 2.dp,
+                            modifier = Modifier
+                                .padding(end = 12.dp)
+                                .size(24.dp)
+                        )
+                    }
+                }
             )
         },
         content = { padding ->
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)) {
-                if (isLoading) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                } else {
-                    ApiLevelsListScreen(viewModel = viewModel)
-                }
-            }
+            ApiLevelsListScreen(
+                viewModel = viewModel,
+                modifier = Modifier.padding(padding)
+            )
         }
     )
 }
+
+

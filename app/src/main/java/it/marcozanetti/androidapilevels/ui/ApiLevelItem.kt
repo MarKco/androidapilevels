@@ -2,8 +2,7 @@ package it.marcozanetti.androidapilevels.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.*import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -29,9 +28,7 @@ fun ApiLevelItem(item: SingleAPILevel, onClick: () -> Unit) {
             .clickable { onClick() }
     ) {
         Row(
-            modifier = Modifier
-                .padding(8.dp)
-                .height(IntrinsicSize.Min),
+            modifier = Modifier.padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
@@ -56,7 +53,7 @@ fun ApiLevelItem(item: SingleAPILevel, onClick: () -> Unit) {
                     painter = painterResource(id = item.logoResourceId),
                     contentDescription = null,
                     modifier = Modifier
-                        .size(62.dp)
+                        .size(42.dp)
                         .clip(RoundedCornerShape(8.dp)),
                     contentScale = ContentScale.Crop
                 )

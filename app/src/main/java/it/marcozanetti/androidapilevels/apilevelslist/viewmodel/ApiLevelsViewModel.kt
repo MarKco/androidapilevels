@@ -1,78 +1,89 @@
 package it.marcozanetti.androidapilevels.apilevelslist.viewmodel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import it.marcozanetti.androidapilevels.apilevelslist.model.DefaultDataProvider
 import it.marcozanetti.androidapilevels.apilevelslist.model.APILevelsRepository
 import it.marcozanetti.androidapilevels.apilevelslist.model.APILevelsRepositoryImpl
 import it.marcozanetti.androidapilevels.apilevelslist.model.SingleAPILevel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
- * ViewModel class. It retrieves data from the Model class (any class implementing APILevels
- * interface), passes them to the fragment view via the getAPILevels method.
- * Doesn't yet implement LiveData and/or Events
+ * UI state for the API levels screen.
+ *
+ * [isLoading] is true while the network request is in flight — the list
+ * stays visible (populated with default data) during this time.
+ * [hasNetworkError] is true when the fetch failed and default data is shown.
+ */
+data class ApiLevelsUiState(
+    val isLoading: Boolean = true,
+    val items: List<SingleAPILevel> = DefaultDataProvider.data,
+    val hasNetworkError: Boolean = false
+)
+
+/**
+ * ViewModel for the API levels screen.
+ * Exposes a single [uiState] StateFlow that the UI collects.
  */
 class ApiLevelsViewModel(
     private val repository: APILevelsRepository = APILevelsRepositoryImpl()
 ) : ViewModel() {
-    var apiLevelItems by mutableStateOf<List<SingleAPILevel>>(DefaultDataProvider.getDefaultData())
-        private set
-    var apiLevelItemsRetrieved by mutableStateOf<List<SingleAPILevel>>(DefaultDataProvider.getDefaultData())
-        private set
 
-    var exceptionsWhileRetrieving: Exception? = null
-        private set
+    private val _uiState = MutableStateFlow(ApiLevelsUiState())
+    val uiState: StateFlow<ApiLevelsUiState> = _uiState.asStateFlow()
 
-    var displaySearchView by mutableStateOf(false)
-        private set
+    // Full unfiltered list used to reset/re-filter after a search
+    private var allItems: List<SingleAPILevel> = DefaultDataProvider.data
 
     init {
-        // Show default data immediately, then fetch remote data in background
         retrieveApiLevelData()
     }
 
     /**
-     * Retrieves data from web page or database
+     * Fetches data from the network. Falls back to local default data on error.
      */
     fun retrieveApiLevelData() {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, hasNetworkError = false) }
             try {
                 val data = repository.getAPILevelsCompose()
-                apiLevelItemsRetrieved = data
-                apiLevelItems = data
+                allItems = data
+                _uiState.update { it.copy(isLoading = false, items = data) }
             } catch (e: Exception) {
-                exceptionsWhileRetrieving = e
-                // Keep showing default data
-                apiLevelItemsRetrieved = DefaultDataProvider.getDefaultData()
-                apiLevelItems = DefaultDataProvider.getDefaultData()
+                allItems = DefaultDataProvider.data
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        items = DefaultDataProvider.data,
+                        hasNetworkError = true
+                    )
+                }
             }
         }
     }
 
+    /** Resets the list to the full unfiltered result. */
     fun resetData() {
-        apiLevelItems = apiLevelItemsRetrieved
+        _uiState.update { it.copy(items = allItems) }
     }
 
-    /**
-     * Filters APIlevels list based
-     * on the provided query
-     */
+    /** Filters the list by [query] across version, codename, date and API level. */
     fun filterData(query: String) {
-        val listOfItems = this.apiLevelItemsRetrieved
-        apiLevelItems = if (query.isBlank()) {
-            listOfItems
+        val filtered = if (query.isBlank()) {
+            allItems
         } else {
-            listOfItems.filter {
-                it.versionNumber.contains(query, true) ||
-                    it.codeName.contains(query, true)      ||
-                    it.releaseDate.contains(query, true)   ||
-                    it.apiLevelStart.toString().contains(query, true)
+            allItems.filter {
+                it.versionNumber.contains(query, ignoreCase = true) ||
+                    it.codeName.contains(query, ignoreCase = true) ||
+                    it.releaseDate.contains(query, ignoreCase = true) ||
+                    it.apiLevelStart.toString().contains(query, ignoreCase = true)
             }
         }
+        _uiState.update { it.copy(items = filtered) }
     }
 }
+

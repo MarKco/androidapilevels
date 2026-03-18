@@ -1,17 +1,24 @@
 package it.marcozanetti.androidapilevels.apilevelslist.model
 
+import androidx.compose.runtime.Immutable
+
 /**
- * An item representing a single Android Version
+ * An item representing a single Android Version.
+ *
+ * [@Immutable] guarantees the Compose compiler that every property is truly
+ * immutable, enabling full skippability of any composable that receives this
+ * type as a parameter.
  */
+@Immutable
 data class SingleAPILevel(
     val codeName: String,
     val versionNumber: String,
-    var releaseDate: String,
-    var supported: Boolean,
+    val releaseDate: String,
+    val supported: Boolean,
     val apiLevelStart: Float,
     val apiLevelEnd: Float,
-    var logoResourceId: Int = 0,
-    var apiName: String? = null
+    val logoResourceId: Int = 0,
+    val apiName: String? = null
 ) {
 
     override fun toString(): String {

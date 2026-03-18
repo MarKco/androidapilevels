@@ -8,63 +8,81 @@ import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
 class APILevelsRepositoryImpl : APILevelsRepository {
-    private val WEBSERVICE_BASE_URL = "https://source.android.com/setup/start/build-numbers/?hl=en"
 
-    override suspend fun getAPILevelsCompose(): List<SingleAPILevel> = withContext(Dispatchers.IO) {
-        try {
-            val retrofit = Retrofit.Builder()
+    companion object {
+        private const val WEBSERVICE_BASE_URL =
+            "https://source.android.com/setup/start/build-numbers/?hl=en"
+
+        // Singleton: built once and reused across all calls
+        private val apiService: ApiService by lazy {
+            Retrofit.Builder()
                 .baseUrl(WEBSERVICE_BASE_URL)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .build()
-            val apiService = retrofit.create(ApiService::class.java)
-            val response = apiService.getStringResponse().execute()
-            if (response.isSuccessful) {
-                val responseString = response.body().orEmpty()
-                val doc = Jsoup.parse(responseString)
-                val tables = doc.getElementsByTag("table")
-                val retrievedApiLevels = ArrayList<SingleAPILevel>()
-                for (table in tables) {
-                    if (table.children()[0].child(0).child(0).text() == "Codename") {
-                        for (singleApiLevelRetrieved in table.children()[1].children()) {
-                            with(singleApiLevelRetrieved) {
-                                val singleAPILevelToReturn = SingleAPILevel(
-                                    versionNumber = children()[1].text(),
-                                    supported = true,
-                                    releaseDate = "",
-                                    codeName = children()[0].text(),
-                                    apiLevelStart = children()[2].text().substringBefore(",").substringAfter("level ").toFloat(),
-                                    apiLevelEnd = children()[2].text().substringBefore(",").substringAfter("level ").toFloat(),
-                                )
-                                retrievedApiLevels.add(singleAPILevelToReturn)
-                            }
-                        }
-                    }
+                .create(ApiService::class.java)
+        }
+    }
+
+    /**
+     * Fetches the API levels from the web page, merges them with local defaults
+     * and returns the result. Throws on network/parse error so the caller can
+     * decide how to handle the fallback.
+     */
+    override suspend fun getAPILevelsCompose(): List<SingleAPILevel> = withContext(Dispatchers.IO) {
+        val response = apiService.getStringResponse()
+        check(response.isSuccessful) { "HTTP error ${response.code()}" }
+
+        val doc = Jsoup.parse(response.body().orEmpty())
+        val retrievedApiLevels = mutableListOf<SingleAPILevel>()
+
+        for (table in doc.getElementsByTag("table")) {
+            if (table.children()[0].child(0).child(0).text() == "Codename") {
+                for (row in table.children()[1].children()) {
+                    val apiLevel = row.children()[2].text()
+                        .substringBefore(",")
+                        .substringAfter("level ")
+                        .toFloatOrNull() ?: continue
+                    retrievedApiLevels.add(
+                        SingleAPILevel(
+                            codeName = row.children()[0].text(),
+                            versionNumber = row.children()[1].text(),
+                            releaseDate = "",
+                            supported = true,
+                            apiLevelStart = apiLevel,
+                            apiLevelEnd = apiLevel,
+                        )
+                    )
                 }
-                return@withContext DefaultDataProvider.getDefaultData().let { defaultList ->
-                    mergeRetrievedListWithDefaultData(retrievedApiLevels, defaultList)
-                }
+            }
+        }
+
+        check(retrievedApiLevels.isNotEmpty()) { "No API levels found in page — HTML structure may have changed" }
+
+        mergeWithDefaultData(retrievedApiLevels, DefaultDataProvider.data)
+    }
+
+    /**
+     * Enriches the network list with release dates, logos and support flags
+     * from local defaults. Uses a Map for O(n+m) complexity.
+     */
+    private fun mergeWithDefaultData(
+        retrieved: List<SingleAPILevel>,
+        defaults: List<SingleAPILevel>
+    ): List<SingleAPILevel> {
+        val defaultsByVersion = defaults.associateBy { it.versionNumber }
+        return retrieved.map { item ->
+            val match = defaultsByVersion[item.versionNumber]
+            if (match != null) {
+                item.copy(
+                    releaseDate = match.releaseDate,
+                    supported = match.supported,
+                    logoResourceId = match.logoResourceId,
+                    apiName = match.apiName
+                )
             } else {
-                return@withContext DefaultDataProvider.getDefaultData()
-            }
-        } catch (e: Exception) {
-            return@withContext DefaultDataProvider.getDefaultData()
-        }
-    }
-
-    private fun mergeRetrievedListWithDefaultData(retrievedList: ArrayList<SingleAPILevel>,
-                                                  defaultList: List<SingleAPILevel>): ArrayList<SingleAPILevel> {
-        for (singleApi in retrievedList) {
-            val correspondingItems = defaultList.filter { it.versionNumber == singleApi.versionNumber }
-            if (correspondingItems.isNotEmpty()) {
-                with(correspondingItems.first()) {
-                    singleApi.releaseDate = this.releaseDate
-                    singleApi.supported = this.supported
-                    singleApi.logoResourceId = this.logoResourceId
-                    singleApi.apiName = this.apiName
-                }
+                item
             }
         }
-        return retrievedList
     }
-
 }
+

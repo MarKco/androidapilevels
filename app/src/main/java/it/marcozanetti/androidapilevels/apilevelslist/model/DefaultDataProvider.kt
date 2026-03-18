@@ -3,15 +3,14 @@ package it.marcozanetti.androidapilevels.apilevelslist.model
 import it.marcozanetti.androidapilevels.R
 
 /**
- * The only purpose of this class is to provide
+ * The only purpose of this object is to provide
  * a set of default data for the app in case
- * connection is missing
+ * connection is missing. The list is built once
+ * and cached for the entire app lifetime.
  */
-class DefaultDataProvider() {
-    companion object {
-        fun getDefaultData(): List<SingleAPILevel> {
-            val items =
-                arrayListOf(
+object DefaultDataProvider {
+    val data: List<SingleAPILevel> by lazy {
+        val items = arrayListOf(
                     SingleAPILevel("no official codename", "1.0", "September 23, 2008", false, 1f, 1f, R.drawable.ic_android_1_0, apiName = "BASE"),
                     SingleAPILevel("no official codename", "1.1", "February 9, 2009", false, 2f, 2f, R.drawable.ic_android_1_0, apiName = "BASE_1_1"),
                     SingleAPILevel("Cupcake", "1.5", "April 27, 2009", false, 3f, 3f, R.drawable.ic_android_cupcake, apiName = "CUPCAKE"),
@@ -49,8 +48,6 @@ class DefaultDataProvider() {
                     SingleAPILevel("Android16", "16", "June 10, 2025", true, 36f, 36f, R.drawable.ic_android_sixteen, apiName = null),
                     SingleAPILevel("Android16 QPR2", "16", "December 12, 2025", true, 36.1f, 36.1f, R.drawable.ic_android_sixteen, apiName = null)
                 )
-
-            return items.sortedWith(compareByDescending({it.apiLevelStart}))
-        }
+        items.sortedByDescending { it.apiLevelStart }
     }
 }
