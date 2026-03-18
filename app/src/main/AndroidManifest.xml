@@ -4,109 +4,173 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/ic_launcher_png"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidSDKVersions">
-        <activity
-            android:name=".ui.MainActivityCompose"
+        <activity android:name=".ui.MainActivityCompose"
             android:exported="true" />
-
+        <!-- Dynamic launcher icon aliases for API levels -->
         <activity-alias
             android:name=".ui.MainActivityDefaultAlias"
             android:enabled="true"
             android:exported="true"
-            android:icon="@drawable/ic_launcher"
-            android:label="@string/app_name"
-            android:roundIcon="@drawable/ic_launcher_round"
+            android:icon="@drawable/ic_launcher_default"
             android:targetActivity=".ui.MainActivityCompose">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-
-        <activity-alias android:name=".ui.MainActivityApi23Alias" android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_api_23" android:label="@string/app_name" android:roundIcon="@drawable/ic_launcher_api_23" android:targetActivity=".ui.MainActivityCompose">
+        <activity-alias
+            android:name=".ui.MainActivityApi23Alias"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_api_23"
+            android:targetActivity=".ui.MainActivityCompose">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name=".ui.MainActivityApi24Alias" android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_api_24" android:label="@string/app_name" android:roundIcon="@drawable/ic_launcher_api_24" android:targetActivity=".ui.MainActivityCompose">
+        <activity-alias
+            android:name=".ui.MainActivityApi24Alias"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_api_24"
+            android:targetActivity=".ui.MainActivityCompose">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name=".ui.MainActivityApi25Alias" android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_api_25" android:label="@string/app_name" android:roundIcon="@drawable/ic_launcher_api_25" android:targetActivity=".ui.MainActivityCompose">
+        <activity-alias
+            android:name=".ui.MainActivityApi25Alias"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_api_25"
+            android:targetActivity=".ui.MainActivityCompose">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name=".ui.MainActivityApi26Alias" android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_api_26" android:label="@string/app_name" android:roundIcon="@drawable/ic_launcher_api_26" android:targetActivity=".ui.MainActivityCompose">
+        <activity-alias
+            android:name=".ui.MainActivityApi26Alias"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_api_26"
+            android:targetActivity=".ui.MainActivityCompose">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name=".ui.MainActivityApi27Alias" android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_api_27" android:label="@string/app_name" android:roundIcon="@drawable/ic_launcher_api_27" android:targetActivity=".ui.MainActivityCompose">
+        <activity-alias
+            android:name=".ui.MainActivityApi27Alias"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_api_27"
+            android:targetActivity=".ui.MainActivityCompose">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name=".ui.MainActivityApi28Alias" android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_api_28" android:label="@string/app_name" android:roundIcon="@drawable/ic_launcher_api_28" android:targetActivity=".ui.MainActivityCompose">
+        <activity-alias
+            android:name=".ui.MainActivityApi28Alias"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_api_28"
+            android:targetActivity=".ui.MainActivityCompose">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name=".ui.MainActivityApi29Alias" android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_api_29" android:label="@string/app_name" android:roundIcon="@drawable/ic_launcher_api_29" android:targetActivity=".ui.MainActivityCompose">
+        <activity-alias
+            android:name=".ui.MainActivityApi29Alias"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_api_29"
+            android:targetActivity=".ui.MainActivityCompose">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name=".ui.MainActivityApi30Alias" android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_api_30" android:label="@string/app_name" android:roundIcon="@drawable/ic_launcher_api_30" android:targetActivity=".ui.MainActivityCompose">
+        <activity-alias
+            android:name=".ui.MainActivityApi30Alias"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_api_30"
+            android:targetActivity=".ui.MainActivityCompose">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name=".ui.MainActivityApi31Alias" android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_api_31" android:label="@string/app_name" android:roundIcon="@drawable/ic_launcher_api_31" android:targetActivity=".ui.MainActivityCompose">
+        <activity-alias
+            android:name=".ui.MainActivityApi31Alias"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_api_31"
+            android:targetActivity=".ui.MainActivityCompose">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name=".ui.MainActivityApi32Alias" android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_api_32" android:label="@string/app_name" android:roundIcon="@drawable/ic_launcher_api_32" android:targetActivity=".ui.MainActivityCompose">
+        <activity-alias
+            android:name=".ui.MainActivityApi32Alias"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_api_32"
+            android:targetActivity=".ui.MainActivityCompose">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name=".ui.MainActivityApi33Alias" android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_api_33" android:label="@string/app_name" android:roundIcon="@drawable/ic_launcher_api_33" android:targetActivity=".ui.MainActivityCompose">
+        <activity-alias
+            android:name=".ui.MainActivityApi33Alias"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_api_33"
+            android:targetActivity=".ui.MainActivityCompose">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name=".ui.MainActivityApi34Alias" android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_api_34" android:label="@string/app_name" android:roundIcon="@drawable/ic_launcher_api_34" android:targetActivity=".ui.MainActivityCompose">
+        <activity-alias
+            android:name=".ui.MainActivityApi34Alias"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_api_34"
+            android:targetActivity=".ui.MainActivityCompose">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name=".ui.MainActivityApi35Alias" android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_api_35" android:label="@string/app_name" android:roundIcon="@drawable/ic_launcher_api_35" android:targetActivity=".ui.MainActivityCompose">
+        <activity-alias
+            android:name=".ui.MainActivityApi35Alias"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_api_35"
+            android:targetActivity=".ui.MainActivityCompose">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name=".ui.MainActivityApi36Alias" android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_api_36" android:label="@string/app_name" android:roundIcon="@drawable/ic_launcher_api_36" android:targetActivity=".ui.MainActivityCompose">
+        <activity-alias
+            android:name=".ui.MainActivityApi36Alias"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_api_36"
+            android:targetActivity=".ui.MainActivityCompose">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

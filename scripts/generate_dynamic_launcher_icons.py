@@ -40,38 +40,74 @@ def get_font(size: int) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
         return ImageFont.load_default()
 
 
+def _api_font_size(text: str) -> int:
+    if len(text) <= 2:
+        return 174
+    if text == "API":
+        return 122
+    return 148
+
+
+def _fg_xy(x: float, y: float) -> tuple[float, float]:
+    # Matches the transform used by res/drawable/ic_launcher_foreground.xml
+    scale = 2.61 * 4.0
+    translate = 22.68 * 4.0
+    return (translate + (x * scale), translate + (y * scale))
+
+
 def _draw_robot_base(draw: ImageDraw.ImageDraw, fill, alpha_mode: bool) -> None:
-    draw.rounded_rectangle((124, 168, 308, 314), radius=42, fill=fill)
-    draw.rounded_rectangle((88, 188, 126, 296), radius=20, fill=fill)
-    draw.rounded_rectangle((306, 188, 344, 296), radius=20, fill=fill)
-    draw.rounded_rectangle((156, 296, 194, 372), radius=18, fill=fill)
-    draw.rounded_rectangle((238, 296, 276, 372), radius=18, fill=fill)
-    draw.ellipse((136, 72, 296, 214), fill=fill)
-    draw.rectangle((136, 144, 296, 214), fill=fill)
-    draw.line((166, 84, 142, 44), fill=fill, width=10)
-    draw.line((266, 84, 290, 44), fill=fill, width=10)
+    # Use official launcher-foreground proportions (24dp Android icon grid).
+    x5, y16 = _fg_xy(5.0, 16.0)
+    x19, y20 = _fg_xy(19.0, 20.0)
+    x7, _ = _fg_xy(7.0, 16.0)
+    _, y12 = _fg_xy(5.0, 12.0)
+    _, y17 = _fg_xy(5.0, 17.0)
+    _, y10 = _fg_xy(5.0, 10.0)
+    _, y3 = _fg_xy(5.0, 3.0)
+    _, y6 = _fg_xy(5.0, 6.0)
+
+    body_radius = int((x7 - x5) * 0.42)
+    limb_radius = int((x7 - x5) * 0.55)
+
+    draw.rounded_rectangle((x5, y12, x19, y20), radius=body_radius, fill=fill)
+    draw.rounded_rectangle((_fg_xy(3.0, 12.2)[0], _fg_xy(3.0, 12.2)[1], _fg_xy(5.0, 18.2)[0], _fg_xy(5.0, 18.2)[1]), radius=limb_radius, fill=fill)
+    draw.rounded_rectangle((_fg_xy(19.0, 12.2)[0], _fg_xy(19.0, 12.2)[1], _fg_xy(21.0, 18.2)[0], _fg_xy(21.0, 18.2)[1]), radius=limb_radius, fill=fill)
+
+    draw.rounded_rectangle((_fg_xy(7.2, 18.0)[0], _fg_xy(7.2, 18.0)[1], _fg_xy(9.4, 22.4)[0], _fg_xy(9.4, 22.4)[1]), radius=limb_radius, fill=fill)
+    draw.rounded_rectangle((_fg_xy(14.6, 18.0)[0], _fg_xy(14.6, 18.0)[1], _fg_xy(16.8, 22.4)[0], _fg_xy(16.8, 22.4)[1]), radius=limb_radius, fill=fill)
+
+    draw.pieslice((_fg_xy(5.0, 3.0)[0], y3, _fg_xy(19.0, 17.0)[0], y17), start=180, end=360, fill=fill)
+    draw.rectangle((x5, y10, x19, y17), fill=fill)
+    draw.line((_fg_xy(7.88, 4.37)[0], _fg_xy(7.88, 4.37)[1], _fg_xy(6.0, 2.27)[0], _fg_xy(6.0, 2.27)[1]), fill=fill, width=10)
+    draw.line((_fg_xy(16.12, 4.37)[0], _fg_xy(16.12, 4.37)[1], _fg_xy(18.22, 2.27)[0], _fg_xy(18.22, 2.27)[1]), fill=fill, width=10)
 
     if not alpha_mode:
-        draw.ellipse((184, 126, 198, 140), fill="#FFFFFF")
-        draw.ellipse((234, 126, 248, 140), fill="#FFFFFF")
+        ex1, ey1 = _fg_xy(9.0, 9.0)
+        ex2, ey2 = _fg_xy(15.0, 9.0)
+        eye_r = 8
+        draw.ellipse((ex1 - eye_r, ey1 - eye_r, ex1 + eye_r, ey1 + eye_r), fill="#FFFFFF")
+        draw.ellipse((ex2 - eye_r, ey2 - eye_r, ex2 + eye_r, ey2 + eye_r), fill="#FFFFFF")
 
 
-def _draw_badge(draw: ImageDraw.ImageDraw, fill) -> tuple[int, int, int, int]:
-    badge = (154, 214, 278, 272)
-    draw.rounded_rectangle(badge, radius=28, fill=fill)
-    return badge
+def _draw_api_text_foreground(draw: ImageDraw.ImageDraw, text: str) -> None:
+    font = get_font(_api_font_size(text))
+    center = (216, 262)
+
+    # Material-like chip behind the number for stable contrast.
+    draw.rounded_rectangle((44, 176, 388, 334), radius=78, fill=(15, 23, 42, 170))
+
+    # Soft outer glow keeps digits readable over busy launchers/masks.
+    draw.text(center, text, font=font, fill=(8, 16, 30, 120), anchor="mm", stroke_width=24, stroke_fill=(8, 16, 30, 120))
+    draw.text(center, text, font=font, fill="#FFFFFF", anchor="mm", stroke_width=12, stroke_fill="#0F172A")
 
 
-def _draw_centered_text(draw: ImageDraw.ImageDraw, text: str, box: tuple[int, int, int, int], fill, cutout: bool = False) -> None:
-    font_size = 60 if len(text) >= 3 else 72
-    font = get_font(font_size)
-    left, top, right, bottom = box
-    center_x = (left + right) / 2
-    center_y = (top + bottom) / 2 - 4
-    if cutout:
-        draw.text((center_x, center_y), text, font=font, fill=0, anchor="mm")
-    else:
-        draw.text((center_x, center_y), text, font=font, fill=fill, anchor="mm")
+def _draw_api_text_monochrome(draw: ImageDraw.ImageDraw, text: str) -> None:
+    font = get_font(_api_font_size(text))
+    center = (216, 262)
+
+    # Wide support shape keeps the cutout digits readable in single-color mode.
+    draw.rounded_rectangle((44, 176, 388, 334), radius=78, fill=255)
+    draw.text(center, text, font=font, fill=0, anchor="mm")
 
 
 def create_foreground_image(text: str) -> Image.Image:
@@ -80,13 +116,12 @@ def create_foreground_image(text: str) -> Image.Image:
 
     shadow = Image.new("RGBA", (ICON_SIZE, ICON_SIZE), (0, 0, 0, 0))
     shadow_draw = ImageDraw.Draw(shadow)
-    shadow_draw.rounded_rectangle((118, 164, 314, 320), radius=46, fill=(15, 23, 42, 36))
-    shadow_draw.ellipse((130, 68, 302, 220), fill=(15, 23, 42, 30))
+    shadow_draw.rounded_rectangle((138, 202, 294, 344), radius=44, fill=(15, 23, 42, 46))
+    shadow_draw.pieslice((136, 118, 296, 286), start=180, end=360, fill=(15, 23, 42, 36))
     image.alpha_composite(shadow)
 
-    _draw_robot_base(draw, "#3DDC84", alpha_mode=False)
-    badge = _draw_badge(draw, "#0F172A")
-    _draw_centered_text(draw, text, badge, "#FFFFFF")
+    _draw_robot_base(draw, "#2660A4", alpha_mode=False)
+    _draw_api_text_foreground(draw, text)
     return image
 
 
@@ -95,10 +130,12 @@ def create_monochrome_image(text: str) -> Image.Image:
     draw = ImageDraw.Draw(alpha)
 
     _draw_robot_base(draw, 255, alpha_mode=True)
-    badge = _draw_badge(draw, 255)
-    draw.ellipse((184, 126, 198, 140), fill=0)
-    draw.ellipse((234, 126, 248, 140), fill=0)
-    _draw_centered_text(draw, text, badge, 255, cutout=True)
+    ex1, ey1 = _fg_xy(9.0, 9.0)
+    ex2, ey2 = _fg_xy(15.0, 9.0)
+    eye_r = 8
+    draw.ellipse((ex1 - eye_r, ey1 - eye_r, ex1 + eye_r, ey1 + eye_r), fill=0)
+    draw.ellipse((ex2 - eye_r, ey2 - eye_r, ex2 + eye_r, ey2 + eye_r), fill=0)
+    _draw_api_text_monochrome(draw, text)
 
     image = Image.new("RGBA", (ICON_SIZE, ICON_SIZE), (0, 0, 0, 0))
     image.putalpha(alpha)
