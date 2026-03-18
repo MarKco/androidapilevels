@@ -80,24 +80,24 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.17.0'
+    implementation 'androidx.core:core-ktx:1.18.0'
     // Compose
-    implementation "androidx.activity:activity-compose:1.8.2"
-    implementation "androidx.compose.ui:ui:1.7.8"
-    implementation "androidx.compose.material:material:1.7.8"
+    implementation "androidx.activity:activity-compose:1.13.0"
+    implementation "androidx.compose.ui:ui:1.10.5"
+    implementation "androidx.compose.material:material:1.10.5"
     implementation "androidx.compose.material:material-icons-core:1.7.8"
-    implementation "androidx.compose.ui:ui-tooling-preview:1.7.8"
+    implementation "androidx.compose.ui:ui-tooling-preview:1.10.5"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.10.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.10.0"
     implementation "androidx.navigation:navigation-compose:2.9.7"
-    debugImplementation "androidx.compose.ui:ui-tooling:1.7.8"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:1.7.8"
+    debugImplementation "androidx.compose.ui:ui-tooling:1.10.5"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:1.10.5"
     // Networking
     implementation "com.squareup.retrofit2:retrofit:3.0.0"
     implementation "com.squareup.retrofit2:converter-moshi:3.0.0"
     ksp 'com.squareup.moshi:moshi-kotlin-codegen:1.15.2'
     implementation 'com.squareup.retrofit2:converter-scalars:3.0.0'
-    implementation 'org.jsoup:jsoup:1.21.2'
+    implementation 'org.jsoup:jsoup:1.22.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.3.2'
     // Progress bar (SpinKit) - optional, if used in Compose
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
