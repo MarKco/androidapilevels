@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -37,7 +38,12 @@ fun ApiLevelItem(
 ) {
     val statusText = if (item.supported) "Supported" else "No updates"
     val logoSize = 48.dp
-    val highlightColor = lerp(MaterialTheme.colors.surface, MaterialTheme.colors.secondary, 0.15f)
+    // Highlight color: more vivid for current API level, especially in dark mode
+    val highlightColor = lerp(
+        MaterialTheme.colors.surface,
+        MaterialTheme.colors.secondary,
+        if (isCurrentLevel && MaterialTheme.colors.isLight.not()) 0.5f else 0.35f
+    )
     val backgroundColor = if (isCurrentLevel) highlightColor else MaterialTheme.colors.surface
     val contentColor = MaterialTheme.colors.onSurface
     Card(
@@ -107,7 +113,9 @@ fun ApiLevelItem(
                             Text(
                                 text = statusText,
                                 style = MaterialTheme.typography.caption,
-                                color = if (item.supported) MaterialTheme.colors.primary else MaterialTheme.colors.onSurface,
+                                color = if (item.supported) {
+                                    if (MaterialTheme.colors.isLight.not()) Color(0xFFFFD600) else MaterialTheme.colors.primary
+                                } else MaterialTheme.colors.onSurface,
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
                             )
                         }
