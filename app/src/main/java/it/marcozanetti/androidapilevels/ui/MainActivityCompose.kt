@@ -5,18 +5,23 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModel
-import androidx.compose.ui.graphics.Color
+import it.marcozanetti.androidapilevels.ui.theme.AndroidAPILevelsTheme
 
 class MainActivityCompose : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MainScreen()
+            AndroidAPILevelsTheme {
+                MainScreen()
+            }
         }
     }
 }
@@ -25,20 +30,47 @@ class MainActivityCompose : ComponentActivity() {
 fun MainScreen() {
     val viewModel: ApiLevelsViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsState()
+    var isSearching by remember { mutableStateOf(false) }
+    var searchQuery by remember { mutableStateOf("") }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Android API Levels", color = Color.White) },
-                backgroundColor = Color(0xFF222222),
-                contentColor = Color.White,
+                title = {
+                    if (isSearching) {
+                        TextField(
+                            value = searchQuery,
+                            onValueChange = {
+                                searchQuery = it
+                                viewModel.filterData(it)
+                            },
+                            placeholder = { Text("Cerca...") },
+                            singleLine = true,
+                            modifier = Modifier.fillMaxWidth(0.85f)
+                        )
+                    } else {
+                        Text("Android API Levels")
+                    }
+                },
+                backgroundColor = MaterialTheme.colors.primary,
+                contentColor = MaterialTheme.colors.onPrimary,
                 actions = {
-                    // Spinner visible while the network fetch is in flight.
-                    // The list is always shown (populated with local data) so
-                    // the user is never staring at a blank screen.
+                    if (isSearching) {
+                        IconButton(onClick = {
+                            isSearching = false
+                            searchQuery = ""
+                            viewModel.resetData()
+                        }) {
+                            Icon(Icons.Default.Close, contentDescription = "Chiudi ricerca")
+                        }
+                    } else {
+                        IconButton(onClick = { isSearching = true }) {
+                            Icon(Icons.Default.Search, contentDescription = "Cerca")
+                        }
+                    }
                     if (uiState.isLoading) {
                         CircularProgressIndicator(
-                            color = Color.White,
+                            color = MaterialTheme.colors.onPrimary,
                             strokeWidth = 2.dp,
                             modifier = Modifier
                                 .padding(end = 12.dp)
@@ -48,6 +80,7 @@ fun MainScreen() {
                 }
             )
         },
+        backgroundColor = MaterialTheme.colors.background,
         content = { padding ->
             ApiLevelsListScreen(
                 viewModel = viewModel,
@@ -56,5 +89,3 @@ fun MainScreen() {
         }
     )
 }
-
-

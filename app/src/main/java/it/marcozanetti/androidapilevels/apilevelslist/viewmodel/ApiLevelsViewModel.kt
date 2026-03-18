@@ -71,7 +71,7 @@ class ApiLevelsViewModel(
         _uiState.update { it.copy(items = allItems) }
     }
 
-    /** Filters the list by [query] across version, codename, date and API level. */
+    /** Filters the list by [query] across all fields of SingleAPILevel. */
     fun filterData(query: String) {
         val filtered = if (query.isBlank()) {
             allItems
@@ -80,10 +80,11 @@ class ApiLevelsViewModel(
                 it.versionNumber.contains(query, ignoreCase = true) ||
                     it.codeName.contains(query, ignoreCase = true) ||
                     it.releaseDate.contains(query, ignoreCase = true) ||
-                    it.apiLevelStart.toString().contains(query, ignoreCase = true)
+                    it.apiLevelStart.toString().contains(query, ignoreCase = true) ||
+                    it.apiLevelEnd.toString().contains(query, ignoreCase = true) ||
+                    (it.apiName?.contains(query, ignoreCase = true) ?: false)
             }
         }
         _uiState.update { it.copy(items = filtered) }
     }
 }
-
