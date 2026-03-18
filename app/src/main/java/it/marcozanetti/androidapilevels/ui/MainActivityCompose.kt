@@ -3,6 +3,7 @@ package it.marcozanetti.androidapilevels.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -55,66 +56,75 @@ fun MainScreen() {
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    if (isSearching) {
-                        TextField(
-                            value = searchQuery,
-                            onValueChange = {
-                                searchQuery = it
-                                viewModel.filterData(it)
-                            },
-                            placeholder = {
-                                Text(
-                                    "Cerca...",
-                                    color = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f)
-                                )
-                            },
-                            singleLine = true,
-                            modifier = Modifier
-                                .fillMaxWidth(0.85f)
-                                .focusRequester(focusRequester),
-                            colors = TextFieldDefaults.textFieldColors(
-                                backgroundColor = Color.Transparent,
-                                focusedIndicatorColor = MaterialTheme.colors.onPrimary,
-                                unfocusedIndicatorColor = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f),
-                                cursorColor = MaterialTheme.colors.onPrimary,
-                                textColor = MaterialTheme.colors.onPrimary,
-                                placeholderColor = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f)
-                            ),
-                            maxLines = 1
-                        )
-                    } else {
-                        Text("Android API Levels")
-                    }
-                },
-                backgroundColor = MaterialTheme.colors.primary,
-                contentColor = MaterialTheme.colors.onPrimary,
-                actions = {
-                    if (isSearching) {
-                        IconButton(onClick = {
-                            isSearching = false
-                            searchQuery = ""
-                            viewModel.resetData()
-                        }) {
-                            Icon(Icons.Default.Close, contentDescription = "Chiudi ricerca")
+            Column {
+                val insets = WindowInsets.statusBars.asPaddingValues()
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(insets.calculateTopPadding())
+                        .background(MaterialTheme.colors.primary)
+                )
+                TopAppBar(
+                    title = {
+                        if (isSearching) {
+                            TextField(
+                                value = searchQuery,
+                                onValueChange = {
+                                    searchQuery = it
+                                    viewModel.filterData(it)
+                                },
+                                placeholder = {
+                                    Text(
+                                        "Cerca...",
+                                        color = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f)
+                                    )
+                                },
+                                singleLine = true,
+                                modifier = Modifier
+                                    .fillMaxWidth(0.85f)
+                                    .focusRequester(focusRequester),
+                                colors = TextFieldDefaults.textFieldColors(
+                                    backgroundColor = Color.Transparent,
+                                    focusedIndicatorColor = MaterialTheme.colors.onPrimary,
+                                    unfocusedIndicatorColor = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f),
+                                    cursorColor = MaterialTheme.colors.onPrimary,
+                                    textColor = MaterialTheme.colors.onPrimary,
+                                    placeholderColor = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f)
+                                ),
+                                maxLines = 1
+                            )
+                        } else {
+                            Text("Android API Levels")
                         }
-                    } else {
-                        IconButton(onClick = { isSearching = true }) {
-                            Icon(Icons.Default.Search, contentDescription = "Cerca")
+                    },
+                    backgroundColor = MaterialTheme.colors.primary,
+                    contentColor = MaterialTheme.colors.onPrimary,
+                    actions = {
+                        if (isSearching) {
+                            IconButton(onClick = {
+                                isSearching = false
+                                searchQuery = ""
+                                viewModel.resetData()
+                            }) {
+                                Icon(Icons.Default.Close, contentDescription = "Chiudi ricerca")
+                            }
+                        } else {
+                            IconButton(onClick = { isSearching = true }) {
+                                Icon(Icons.Default.Search, contentDescription = "Cerca")
+                            }
+                        }
+                        if (uiState.isLoading) {
+                            CircularProgressIndicator(
+                                color = MaterialTheme.colors.onPrimary,
+                                strokeWidth = 2.dp,
+                                modifier = Modifier
+                                    .padding(end = 12.dp)
+                                    .size(24.dp)
+                            )
                         }
                     }
-                    if (uiState.isLoading) {
-                        CircularProgressIndicator(
-                            color = MaterialTheme.colors.onPrimary,
-                            strokeWidth = 2.dp,
-                            modifier = Modifier
-                                .padding(end = 12.dp)
-                                .size(24.dp)
-                        )
-                    }
-                }
-            )
+                )
+            }
         },
         backgroundColor = MaterialTheme.colors.background,
         content = { padding ->
