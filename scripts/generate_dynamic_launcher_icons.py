@@ -12,10 +12,11 @@ Run it whenever a new Android API level should get a dedicated launcher icon.
 
 from __future__ import annotations
 
+import math
 from pathlib import Path
 from typing import Iterable
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 ROOT = Path(__file__).resolve().parents[1]
 RES_DIR = ROOT / "app" / "src" / "main" / "res"
@@ -40,88 +41,132 @@ def get_font(size: int) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
         return ImageFont.load_default()
 
 
-def _api_font_size(text: str) -> int:
-    if len(text) <= 2:
-        return 174
-    if text == "API":
-        return 122
-    return 148
+def _draw_robot_elements(draw: ImageDraw.ImageDraw, fill, offset_x=0, offset_y=0, alpha_mode=False) -> None:
+    CX = ICON_SIZE // 2
+    body_w = 176
+    body_h = 166
+    head_r = body_w // 2
 
+    body_l = CX - body_w // 2 + offset_x
+    body_r = CX + body_w // 2 + offset_x
+    body_t = 164 + offset_y
+    body_b = body_t + body_h
 
-def _fg_xy(x: float, y: float) -> tuple[float, float]:
-    # Matches the transform used by res/drawable/ic_launcher_foreground.xml
-    scale = 2.61 * 4.0
-    translate = 22.68 * 4.0
-    return (translate + (x * scale), translate + (y * scale))
+    # Head seamlessly attached to body
+    head_b = body_t
+    head_box_t = head_b - head_r
+    head_box_b = head_b + head_r
 
+    arm_w = 42
+    arm_h = 114
+    arm_gap = 14
+    l_arm_l = body_l - arm_gap - arm_w
+    l_arm_r = body_l - arm_gap
+    r_arm_l = body_r + arm_gap
+    r_arm_r = body_r + arm_gap + arm_w
 
-def _draw_robot_base(draw: ImageDraw.ImageDraw, fill, alpha_mode: bool) -> None:
-    # Use official launcher-foreground proportions (24dp Android icon grid).
-    x5, y16 = _fg_xy(5.0, 16.0)
-    x19, y20 = _fg_xy(19.0, 20.0)
-    x7, _ = _fg_xy(7.0, 16.0)
-    _, y12 = _fg_xy(5.0, 12.0)
-    _, y17 = _fg_xy(5.0, 17.0)
-    _, y10 = _fg_xy(5.0, 10.0)
-    _, y3 = _fg_xy(5.0, 3.0)
-    _, y6 = _fg_xy(5.0, 6.0)
+    leg_w = 42
+    leg_h = 76
+    leg_gap = 42
+    l_leg_l = CX - leg_gap//2 - leg_w + offset_x
+    l_leg_r = CX - leg_gap//2 + offset_x
+    r_leg_l = CX + leg_gap//2 + offset_x
+    r_leg_r = CX + leg_gap//2 + leg_w + offset_x
 
-    body_radius = int((x7 - x5) * 0.42)
-    limb_radius = int((x7 - x5) * 0.55)
+    ant_l = 44
+    ant_w = 9
+    angle = 0.5235987756  # 30 degrees in radians
+    head_cx = CX + offset_x
+    head_cy = head_b
 
-    draw.rounded_rectangle((x5, y12, x19, y20), radius=body_radius, fill=fill)
-    draw.rounded_rectangle((_fg_xy(3.0, 12.2)[0], _fg_xy(3.0, 12.2)[1], _fg_xy(5.0, 18.2)[0], _fg_xy(5.0, 18.2)[1]), radius=limb_radius, fill=fill)
-    draw.rounded_rectangle((_fg_xy(19.0, 12.2)[0], _fg_xy(19.0, 12.2)[1], _fg_xy(21.0, 18.2)[0], _fg_xy(21.0, 18.2)[1]), radius=limb_radius, fill=fill)
+    # Antennas
+    start_x = head_cx - head_r * math.sin(angle) * 0.75
+    start_y = head_cy - head_r * math.cos(angle) * 0.75
+    end_x = start_x - ant_l * math.sin(angle)
+    end_y = start_y - ant_l * math.cos(angle)
+    draw.line((start_x, start_y, end_x, end_y), fill=fill, width=ant_w)
+    draw.ellipse((start_x - ant_w//2, start_y - ant_w//2, start_x + ant_w//2, start_y + ant_w//2), fill=fill)
+    draw.ellipse((end_x - ant_w//2, end_y - ant_w//2, end_x + ant_w//2, end_y + ant_w//2), fill=fill)
 
-    draw.rounded_rectangle((_fg_xy(7.2, 18.0)[0], _fg_xy(7.2, 18.0)[1], _fg_xy(9.4, 22.4)[0], _fg_xy(9.4, 22.4)[1]), radius=limb_radius, fill=fill)
-    draw.rounded_rectangle((_fg_xy(14.6, 18.0)[0], _fg_xy(14.6, 18.0)[1], _fg_xy(16.8, 22.4)[0], _fg_xy(16.8, 22.4)[1]), radius=limb_radius, fill=fill)
+    start_x_r = head_cx + head_r * math.sin(angle) * 0.75
+    start_y_r = start_y
+    end_x_r = start_x_r + ant_l * math.sin(angle)
+    end_y_r = end_y
+    draw.line((start_x_r, start_y_r, end_x_r, end_y_r), fill=fill, width=ant_w)
+    draw.ellipse((start_x_r - ant_w//2, start_y_r - ant_w//2, start_x_r + ant_w//2, start_y_r + ant_w//2), fill=fill)
+    draw.ellipse((end_x_r - ant_w//2, end_y_r - ant_w//2, end_x_r + ant_w//2, end_y_r + ant_w//2), fill=fill)
 
-    draw.pieslice((_fg_xy(5.0, 3.0)[0], y3, _fg_xy(19.0, 17.0)[0], y17), start=180, end=360, fill=fill)
-    draw.rectangle((x5, y10, x19, y17), fill=fill)
-    draw.line((_fg_xy(7.88, 4.37)[0], _fg_xy(7.88, 4.37)[1], _fg_xy(6.0, 2.27)[0], _fg_xy(6.0, 2.27)[1]), fill=fill, width=10)
-    draw.line((_fg_xy(16.12, 4.37)[0], _fg_xy(16.12, 4.37)[1], _fg_xy(18.22, 2.27)[0], _fg_xy(18.22, 2.27)[1]), fill=fill, width=10)
+    # Legs
+    draw.rounded_rectangle((l_leg_l, body_b - 20, l_leg_r, body_b + leg_h), radius=leg_w//2, fill=fill)
+    draw.rounded_rectangle((r_leg_l, body_b - 20, r_leg_r, body_b + leg_h), radius=leg_w//2, fill=fill)
 
+    # Arms
+    draw.rounded_rectangle((l_arm_l, body_t, l_arm_r, body_t + arm_h), radius=arm_w//2, fill=fill)
+    draw.rounded_rectangle((r_arm_l, body_t, r_arm_r, body_t + arm_h), radius=arm_w//2, fill=fill)
+
+    # Body
+    draw.rounded_rectangle((body_l, body_t, body_r, body_b), radius=22, fill=fill)
+    # Fill the top corners to merge seamlessly with the head
+    draw.rectangle((body_l, body_t, body_r, body_t + 22), fill=fill)
+
+    # Head (perfect semi-circle)
+    draw.pieslice((body_l, head_box_t, body_r, head_box_b), start=180, end=360, fill=fill)
+
+    # Eyes
     if not alpha_mode:
-        ex1, ey1 = _fg_xy(9.0, 9.0)
-        ex2, ey2 = _fg_xy(15.0, 9.0)
-        eye_r = 8
-        draw.ellipse((ex1 - eye_r, ey1 - eye_r, ex1 + eye_r, ey1 + eye_r), fill="#FFFFFF")
-        draw.ellipse((ex2 - eye_r, ey2 - eye_r, ex2 + eye_r, ey2 + eye_r), fill="#FFFFFF")
+        eye_r = 9
+        eye_y = head_b - head_r * 0.45
+        l_eye_x = head_cx - head_r * 0.45
+        r_eye_x = head_cx + head_r * 0.45
+        draw.ellipse((l_eye_x - eye_r, eye_y - eye_r, l_eye_x + eye_r, eye_y + eye_r), fill="#FFFFFF")
+        draw.ellipse((r_eye_x - eye_r, eye_y - eye_r, r_eye_x + eye_r, eye_y + eye_r), fill="#FFFFFF")
 
 
 def _draw_api_text_foreground(draw: ImageDraw.ImageDraw, text: str) -> None:
-    font = get_font(_api_font_size(text))
-    center = (216, 262)
+    font_size = 76 if text == "API" else 92
+    font = get_font(font_size)
+    CX = ICON_SIZE // 2
+    # Center vertically on the main rectangle body
+    center_y = 164 + 166 // 2
+    badge_r = 64
 
-    # Material-like chip behind the number for stable contrast.
-    draw.rounded_rectangle((44, 176, 388, 334), radius=78, fill=(15, 23, 42, 170))
+    # Badge drop shadow
+    draw.ellipse((CX - badge_r, center_y - badge_r + 6, CX + badge_r, center_y + badge_r + 6), fill=(0, 0, 0, 50))
+    # Badge (White)
+    draw.ellipse((CX - badge_r, center_y - badge_r, CX + badge_r, center_y + badge_r), fill="#FFFFFF")
 
-    # Soft outer glow keeps digits readable over busy launchers/masks.
-    draw.text(center, text, font=font, fill=(8, 16, 30, 120), anchor="mm", stroke_width=24, stroke_fill=(8, 16, 30, 120))
-    draw.text(center, text, font=font, fill="#FFFFFF", anchor="mm", stroke_width=12, stroke_fill="#0F172A")
+    # Text (Android Navy for massive contrast against the white badge)
+    draw.text((CX, center_y - 2), text, font=font, fill="#073042", anchor="mm")
 
 
 def _draw_api_text_monochrome(draw: ImageDraw.ImageDraw, text: str) -> None:
-    font = get_font(_api_font_size(text))
-    center = (216, 262)
+    font_size = 76 if text == "API" else 92
+    font = get_font(font_size)
+    CX = ICON_SIZE // 2
+    center_y = 164 + 166 // 2
+    badge_r = 64
 
-    # Wide support shape keeps the cutout digits readable in single-color mode.
-    draw.rounded_rectangle((44, 176, 388, 334), radius=78, fill=255)
-    draw.text(center, text, font=font, fill=0, anchor="mm")
+    # Cutout a hole in the robot body for the badge shape
+    draw.ellipse((CX - badge_r, center_y - badge_r, CX + badge_r, center_y + badge_r), fill=0)
+
+    # Draw solid text inside the hole
+    draw.text((CX, center_y - 2), text, font=font, fill=255, anchor="mm")
 
 
 def create_foreground_image(text: str) -> Image.Image:
     image = Image.new("RGBA", (ICON_SIZE, ICON_SIZE), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(image)
 
+    # Draw soft drop shadow layer for Material style
     shadow = Image.new("RGBA", (ICON_SIZE, ICON_SIZE), (0, 0, 0, 0))
     shadow_draw = ImageDraw.Draw(shadow)
-    shadow_draw.rounded_rectangle((138, 202, 294, 344), radius=44, fill=(15, 23, 42, 46))
-    shadow_draw.pieslice((136, 118, 296, 286), start=180, end=360, fill=(15, 23, 42, 36))
+    _draw_robot_elements(shadow_draw, (0, 0, 0, 60), offset_x=0, offset_y=10)
+    shadow = shadow.filter(ImageFilter.GaussianBlur(8))
     image.alpha_composite(shadow)
 
-    _draw_robot_base(draw, "#2660A4", alpha_mode=False)
+    draw = ImageDraw.Draw(image)
+    _draw_robot_elements(draw, "#3DDC84", alpha_mode=False)
     _draw_api_text_foreground(draw, text)
+
     return image
 
 
@@ -129,12 +174,23 @@ def create_monochrome_image(text: str) -> Image.Image:
     alpha = Image.new("L", (ICON_SIZE, ICON_SIZE), 0)
     draw = ImageDraw.Draw(alpha)
 
-    _draw_robot_base(draw, 255, alpha_mode=True)
-    ex1, ey1 = _fg_xy(9.0, 9.0)
-    ex2, ey2 = _fg_xy(15.0, 9.0)
-    eye_r = 8
-    draw.ellipse((ex1 - eye_r, ey1 - eye_r, ex1 + eye_r, ey1 + eye_r), fill=0)
-    draw.ellipse((ex2 - eye_r, ey2 - eye_r, ex2 + eye_r, ey2 + eye_r), fill=0)
+    # Draw solid white robot
+    _draw_robot_elements(draw, 255, alpha_mode=True)
+
+    # Cutout eyes manually for alpha channel
+    CX = ICON_SIZE // 2
+    body_w = 176
+    head_r = body_w // 2
+    head_b = 164
+    head_cx = CX
+    eye_r = 9
+    eye_y = head_b - head_r * 0.45
+    l_eye_x = head_cx - head_r * 0.45
+    r_eye_x = head_cx + head_r * 0.45
+    draw.ellipse((l_eye_x - eye_r, eye_y - eye_r, l_eye_x + eye_r, eye_y + eye_r), fill=0)
+    draw.ellipse((r_eye_x - eye_r, eye_y - eye_r, r_eye_x + eye_r, eye_y + eye_r), fill=0)
+
+    # Cutout badge and draw text
     _draw_api_text_monochrome(draw, text)
 
     image = Image.new("RGBA", (ICON_SIZE, ICON_SIZE), (0, 0, 0, 0))
@@ -181,4 +237,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
