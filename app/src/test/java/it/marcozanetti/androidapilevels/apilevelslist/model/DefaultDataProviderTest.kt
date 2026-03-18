@@ -12,13 +12,13 @@ class DefaultDataProviderTest : junit.framework.TestCase() {
 
     @Test
     fun testNotEmptyDefaultList() {
-        assertTrue(DefaultDataProvider.getDefaultData().isNotEmpty())
+        assertTrue(DefaultDataProvider.data.isNotEmpty())
     }
 
     @Test
     fun testRightSizeForDefaultList() {
         assertEquals(
-            DefaultDataProvider.getDefaultData().size,
+            DefaultDataProvider.data.size,
             37
         )
     }

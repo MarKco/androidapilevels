@@ -9,11 +9,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModel
 import it.marcozanetti.androidapilevels.ui.theme.AndroidAPILevelsTheme
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 
 class MainActivityCompose : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,12 +32,25 @@ class MainActivityCompose : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MainScreen() {
     val viewModel: ApiLevelsViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsState()
     var isSearching by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
+    val focusRequester = remember { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
+
+    LaunchedEffect(isSearching) {
+        if (isSearching) {
+            focusRequester.requestFocus()
+            keyboardController?.show()
+        } else {
+            focusManager.clearFocus()
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -44,9 +63,25 @@ fun MainScreen() {
                                 searchQuery = it
                                 viewModel.filterData(it)
                             },
-                            placeholder = { Text("Cerca...") },
+                            placeholder = {
+                                Text(
+                                    "Cerca...",
+                                    color = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f)
+                                )
+                            },
                             singleLine = true,
-                            modifier = Modifier.fillMaxWidth(0.85f)
+                            modifier = Modifier
+                                .fillMaxWidth(0.85f)
+                                .focusRequester(focusRequester),
+                            colors = TextFieldDefaults.textFieldColors(
+                                backgroundColor = Color.Transparent,
+                                focusedIndicatorColor = MaterialTheme.colors.onPrimary,
+                                unfocusedIndicatorColor = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f),
+                                cursorColor = MaterialTheme.colors.onPrimary,
+                                textColor = MaterialTheme.colors.onPrimary,
+                                placeholderColor = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f)
+                            ),
+                            maxLines = 1
                         )
                     } else {
                         Text("Android API Levels")

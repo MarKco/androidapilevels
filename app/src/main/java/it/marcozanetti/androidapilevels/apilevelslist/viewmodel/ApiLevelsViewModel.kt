@@ -29,18 +29,27 @@ data class ApiLevelsUiState(
  * ViewModel for the API levels screen.
  * Exposes a single [uiState] StateFlow that the UI collects.
  */
-class ApiLevelsViewModel(
-    private val repository: APILevelsRepository = APILevelsRepositoryImpl()
-) : ViewModel() {
+class ApiLevelsViewModel : ViewModel {
+    private val _uiState: MutableStateFlow<ApiLevelsUiState>
+    val uiState: StateFlow<ApiLevelsUiState>
+    private var allItems: List<SingleAPILevel>
+    private val repository: APILevelsRepository?
 
-    private val _uiState = MutableStateFlow(ApiLevelsUiState())
-    val uiState: StateFlow<ApiLevelsUiState> = _uiState.asStateFlow()
-
-    // Full unfiltered list used to reset/re-filter after a search
-    private var allItems: List<SingleAPILevel> = DefaultDataProvider.data
-
-    init {
+    // Costruttore principale (produzione)
+    constructor(repository: APILevelsRepository = APILevelsRepositoryImpl()) : super() {
+        this.repository = repository
+        _uiState = MutableStateFlow(ApiLevelsUiState())
+        uiState = _uiState.asStateFlow()
+        allItems = DefaultDataProvider.data
         retrieveApiLevelData()
+    }
+
+    // Costruttore per test (no rete)
+    constructor(testData: List<SingleAPILevel>) : super() {
+        this.repository = null
+        allItems = testData
+        _uiState = MutableStateFlow(ApiLevelsUiState(isLoading = false, items = testData, hasNetworkError = false))
+        uiState = _uiState.asStateFlow()
     }
 
     /**
@@ -50,7 +59,7 @@ class ApiLevelsViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, hasNetworkError = false) }
             try {
-                val data = repository.getAPILevelsCompose()
+                val data = repository!!.getAPILevelsCompose()
                 allItems = data
                 _uiState.update { it.copy(isLoading = false, items = data) }
             } catch (e: Exception) {
