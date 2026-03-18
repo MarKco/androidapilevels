@@ -107,3 +107,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
     androidTestImplementation "androidx.arch.core:core-testing:2.2.0"
 }
+
+tasks.register("generateIcons", Exec) {
+    workingDir rootProject.projectDir
+    commandLine 'python3', 'scripts/generate_dynamic_launcher_icons.py'
+}
