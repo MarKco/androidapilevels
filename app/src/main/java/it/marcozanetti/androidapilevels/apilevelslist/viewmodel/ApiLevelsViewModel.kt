@@ -59,9 +59,11 @@ class ApiLevelsViewModel : ViewModel {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, hasNetworkError = false) }
             try {
-                val data = repository!!.getAPILevelsCompose()
-                allItems = data
-                _uiState.update { it.copy(isLoading = false, items = data) }
+                val data = repository?.getAPILevelsCompose()
+                data?.let { newData ->
+                    allItems = newData
+                    _uiState.update { it.copy(isLoading = false, items = newData) }
+                }
             } catch (e: Exception) {
                 allItems = DefaultDataProvider.data
                 _uiState.update {

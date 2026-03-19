@@ -75,7 +75,7 @@ fun ApiLevelItem(
                         )
                     } else {
                         Text(
-                            text = item.versionNumber,
+                            text = item.versionNumber.takeIf { it.isNotEmpty() } ?: "?",
                             style = MaterialTheme.typography.caption,
                             fontWeight = FontWeight.Bold,
                             maxLines = 1
