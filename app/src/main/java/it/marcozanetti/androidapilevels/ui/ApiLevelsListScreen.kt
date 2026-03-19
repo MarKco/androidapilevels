@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 fun ApiLevelsListScreen(
     viewModel: ApiLevelsViewModel = viewModel(factory = ApiLevelsViewModelFactory()),
     modifier: Modifier = Modifier,
-    onItemClick: (SingleAPILevel) -> Unit = {},
-    currentApiLevel: Int = -1
+    currentApiLevel: Int = -1,
+    onItemClick: (SingleAPILevel) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     LazyColumn(

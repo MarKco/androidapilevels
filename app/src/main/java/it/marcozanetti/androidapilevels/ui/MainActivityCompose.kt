@@ -24,6 +24,9 @@ import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewMod
 import it.marcozanetti.androidapilevels.ui.theme.AndroidAPILevelsTheme
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import it.marcozanetti.androidapilevels.apilevelslist.model.SingleAPILevel
+import it.marcozanetti.androidapilevels.ui.ApiLevelDialog
+import it.marcozanetti.androidapilevels.R
 
 class MainActivityCompose : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +51,9 @@ fun MainScreen() {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
     val currentApiLevel = Build.VERSION.SDK_INT
+
+    // Stato per la dialog
+    var selectedApiLevel by remember { mutableStateOf<SingleAPILevel?>(null) }
 
     LaunchedEffect(isSearching) {
         if (isSearching) {
@@ -135,8 +141,15 @@ fun MainScreen() {
             ApiLevelsListScreen(
                 viewModel = viewModel,
                 modifier = Modifier.padding(padding),
-                currentApiLevel = currentApiLevel
+                currentApiLevel = currentApiLevel,
+                onItemClick = { selectedApiLevel = it }
             )
+            selectedApiLevel?.let { apiLevel ->
+                ApiLevelDialog(
+                    apiLevel = apiLevel,
+                    onDismiss = { selectedApiLevel = null }
+                )
+            }
         }
     )
 }
