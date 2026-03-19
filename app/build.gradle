@@ -92,6 +92,14 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:2.9.7"
     debugImplementation "androidx.compose.ui:ui-tooling:1.10.5"
     debugImplementation "androidx.compose.ui:ui-test-manifest:1.10.5"
+    // TESTS
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    androidTestImplementation "androidx.arch.core:core-testing:2.2.0"
+    // Compose UI test dependencies
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.10.5"
+    implementation "androidx.compose.ui:ui-test-junit4:1.10.5" // Optional, for unit tests
     // Networking
     implementation "com.squareup.retrofit2:retrofit:3.0.0"
     implementation "com.squareup.retrofit2:converter-moshi:3.0.0"
@@ -103,8 +111,8 @@ dependencies {
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
     // TESTS
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.3.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
     androidTestImplementation "androidx.arch.core:core-testing:2.2.0"
 }
 

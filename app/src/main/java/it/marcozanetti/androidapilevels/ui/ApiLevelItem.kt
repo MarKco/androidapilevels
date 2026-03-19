@@ -24,10 +24,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import it.marcozanetti.androidapilevels.R
 import it.marcozanetti.androidapilevels.apilevelslist.model.SingleAPILevel
 
 @Composable
@@ -36,7 +38,7 @@ fun ApiLevelItem(
     onClick: () -> Unit,
     isCurrentLevel: Boolean = false
 ) {
-    val statusText = if (item.supported) "Supported" else "No updates"
+    val statusText = if (item.supported) stringResource(id = R.string.status_supported) else stringResource(id = R.string.status_no_updates)
     val logoSize = 48.dp
     // Highlight color: more vivid for current API level, especially in dark mode
     val highlightColor = lerp(
@@ -122,7 +124,7 @@ fun ApiLevelItem(
                     }
 
                     Text(
-                        text = "Android ${item.versionNumber} - ${item.getApiText()}",
+                        text = stringResource(id = R.string.item_info, item.versionNumber, item.getApiText()),
                         style = MaterialTheme.typography.body2,
                         fontWeight = FontWeight.Medium
                     )
@@ -155,9 +157,9 @@ fun ApiLevelItem(
 fun ApiLevelItemPreview() {
     ApiLevelItem(
         item = SingleAPILevel(
-            codeName = "Pie",
-            versionNumber = "9.0",
-            releaseDate = "August 6, 2018",
+            codeName = stringResource(id = R.string.pie),
+            versionNumber = stringResource(id = R.string.august_6_2018),
+            releaseDate = stringResource(id = R.string.august_6_2018),
             supported = true,
             apiLevelStart = 28f,
             apiLevelEnd = 28f,

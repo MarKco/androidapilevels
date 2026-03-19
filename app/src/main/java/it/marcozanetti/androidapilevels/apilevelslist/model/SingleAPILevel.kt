@@ -20,28 +20,11 @@ data class SingleAPILevel(
     val logoResourceId: Int = 0,
     val apiName: String? = null
 ) {
-
-    override fun toString(): String {
-        var stringToPrint = "Android $codeName version $versionNumber released on $releaseDate with API level $apiLevelStart"
-        if (apiLevelEnd > apiLevelStart) {
-            stringToPrint += "-$apiLevelEnd"
-        }
-        if(!supported) stringToPrint += " not"
-        stringToPrint += " supported for security updates"
-
-        return stringToPrint
+    fun getApiText(): String {
+        return "API ${formatApiLevel(apiLevelStart)}" +
+            if (apiLevelEnd > apiLevelStart) "-${formatApiLevel(apiLevelEnd)}" else ""
     }
 
-    fun getApiText() : String {
-        var stringToPrint = "API ${formatApiLevel(apiLevelStart)}"
-        if (apiLevelEnd > apiLevelStart) {
-            stringToPrint += "-${formatApiLevel(apiLevelEnd)}"
-        }
-
-        return stringToPrint
-    }
-
-    // Formats the API level as int if it doesn't have any subversion (es. API 16), keeps the subversion otherwise (es. 16.1)
     private fun formatApiLevel(level: Float): String =
         if (level == level.toInt().toFloat()) level.toInt().toString() else level.toString()
 }

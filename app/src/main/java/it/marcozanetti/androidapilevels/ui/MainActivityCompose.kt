@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.marcozanetti.androidapilevels.apilevelslist.viewmodel.ApiLevelsViewModel
@@ -78,7 +79,7 @@ fun MainScreen() {
                                 },
                                 placeholder = {
                                     Text(
-                                        "Cerca...",
+                                        text = stringResource(id = R.string.search_placeholder),
                                         color = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f)
                                     )
                                 },
@@ -97,7 +98,7 @@ fun MainScreen() {
                                 maxLines = 1
                             )
                         } else {
-                            Text("Android API Levels")
+                            Text(text = stringResource(id = R.string.app_bar_title))
                         }
                     },
                     backgroundColor = MaterialTheme.colors.primary,
@@ -109,11 +110,11 @@ fun MainScreen() {
                                 searchQuery = ""
                                 viewModel.resetData()
                             }) {
-                                Icon(Icons.Default.Close, contentDescription = "Chiudi ricerca")
+                                Icon(Icons.Default.Close, contentDescription = stringResource(id = R.string.close_search))
                             }
                         } else {
                             IconButton(onClick = { isSearching = true }) {
-                                Icon(Icons.Default.Search, contentDescription = "Cerca")
+                                Icon(Icons.Default.Search, contentDescription = stringResource(id = R.string.search))
                             }
                         }
                         if (uiState.isLoading) {

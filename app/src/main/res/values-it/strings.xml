@@ -13,4 +13,20 @@
     <string name="version_number">Numero versione</string>
     <string name="api_level">Livello API</string>
     <string name="release_date">Data di rilascio</string>
+    <string name="search_placeholder">Cerca...</string>
+    <string name="app_bar_title">Livelli API Android</string>
+    <string name="close_search">Chiudi ricerca</string>
+    <string name="search">Cerca</string>
+    <string name="status_supported">Supportato</string>
+    <string name="status_no_updates">Nessun aggiornamento</string>
+    <string name="item_info">Android %1$s - %2$s</string>
+    <string name="pie">Pie</string>
+    <string name="oreo">Oreo</string>
+    <string name="nougat">Nougat</string>
+    <string name="august_6_2018">6 agosto 2018</string>
+    <string name="august_21_2017">21 agosto 2017</string>
+    <string name="august_22_2016">22 agosto 2016</string>
+    <string name="item_info_long">Android %1$s versione %2$s rilasciato il %3$s con livello API %4$s%5$s%6$s supportato per gli aggiornamenti di sicurezza</string>
+    <string name="not">non</string>
+    <string name="api">API %1$s</string>
 </resources>
