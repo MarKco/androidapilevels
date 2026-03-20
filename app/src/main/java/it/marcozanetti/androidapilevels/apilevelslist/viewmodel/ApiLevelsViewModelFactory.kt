@@ -2,6 +2,7 @@ package it.marcozanetti.androidapilevels.apilevelslist.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
 import it.marcozanetti.androidapilevels.apilevelslist.model.APILevelsRepositoryImpl
 
 class ApiLevelsViewModelFactory : ViewModelProvider.Factory {
@@ -13,5 +14,12 @@ class ApiLevelsViewModelFactory : ViewModelProvider.Factory {
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
-}
 
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
+        if (modelClass.isAssignableFrom(ApiLevelsViewModel::class.java)) {
+            return ApiLevelsViewModel(APILevelsRepositoryImpl()) as T
+        }
+        return super.create(modelClass, extras)
+    }
+}

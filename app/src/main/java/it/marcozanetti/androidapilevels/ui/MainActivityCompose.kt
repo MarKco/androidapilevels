@@ -31,7 +31,10 @@ import it.marcozanetti.androidapilevels.R
 class MainActivityCompose : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        LauncherIconManager.updateLauncherIcon(this)
+        LauncherIconManager.updateLauncherIcon(
+            context = this,
+            launchedComponentClassName = intent?.component?.className
+        )
         setContent {
             AndroidAPILevelsTheme {
                 MainScreen()
@@ -43,8 +46,8 @@ class MainActivityCompose : ComponentActivity() {
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MainScreen() {
-    val viewModel: ApiLevelsViewModel = viewModel(factory = ApiLevelsViewModelFactory())
-    val uiState by viewModel.uiState.collectAsState()
+    val apiViewModel: ApiLevelsViewModel = viewModel(factory = ApiLevelsViewModelFactory())
+    val uiState by apiViewModel.uiState.collectAsState()
     var isSearching by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
     val focusRequester = remember { FocusRequester() }
@@ -81,7 +84,7 @@ fun MainScreen() {
                                 value = searchQuery,
                                 onValueChange = {
                                     searchQuery = it
-                                    viewModel.filterData(it)
+                                    apiViewModel.filterData(it)
                                 },
                                 placeholder = {
                                     Text(
@@ -114,7 +117,7 @@ fun MainScreen() {
                             IconButton(onClick = {
                                 isSearching = false
                                 searchQuery = ""
-                                viewModel.resetData()
+                                apiViewModel.resetData()
                             }) {
                                 Icon(Icons.Default.Close, contentDescription = stringResource(id = R.string.close_search))
                             }
@@ -139,7 +142,7 @@ fun MainScreen() {
         backgroundColor = MaterialTheme.colors.background,
         content = { padding ->
             ApiLevelsListScreen(
-                viewModel = viewModel,
+                apiViewModel = apiViewModel,
                 modifier = Modifier.padding(padding),
                 currentApiLevel = currentApiLevel,
                 onItemClick = { selectedApiLevel = it }

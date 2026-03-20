@@ -31,18 +31,32 @@ object LauncherIconManager {
 
     private val allAliases = listOf(DEFAULT_ALIAS) + supportedAliases.values
 
-    fun updateLauncherIcon(context: Context) {
+    fun updateLauncherIcon(
+        context: Context,
+        launchedComponentClassName: String? = null
+    ) {
         val targetAlias = supportedAliases[Build.VERSION.SDK_INT] ?: DEFAULT_ALIAS
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val previousAlias = prefs.getString(PREF_LAST_ALIAS, DEFAULT_ALIAS)
+        val keepEnabledAlias = launchedComponentClassName
+            ?.takeIf { launchedClass -> allAliases.any { alias -> launchedClass == context.packageName + alias } }
+            ?.removePrefix(context.packageName)
+
         if (previousAlias == targetAlias && isAliasEnabled(context, targetAlias)) {
+            // On some launchers/IDE runs the app can still be started via a previous alias.
+            // Keep that alias enabled for this run so explicit launches do not fail.
+            if (keepEnabledAlias != null && keepEnabledAlias != targetAlias) {
+                setAliasState(context, keepEnabledAlias, PackageManager.COMPONENT_ENABLED_STATE_ENABLED)
+            }
             return
         }
 
         setAliasState(context, targetAlias, PackageManager.COMPONENT_ENABLED_STATE_ENABLED)
         allAliases
             .asSequence()
-            .filter { it != targetAlias }
+            .filter { alias ->
+                alias != targetAlias && alias != keepEnabledAlias
+            }
             .forEach { alias ->
                 setAliasState(context, alias, PackageManager.COMPONENT_ENABLED_STATE_DISABLED)
             }

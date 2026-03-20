@@ -18,12 +18,12 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ApiLevelsListScreen(
-    viewModel: ApiLevelsViewModel = viewModel(factory = ApiLevelsViewModelFactory()),
+    apiViewModel: ApiLevelsViewModel = viewModel(factory = ApiLevelsViewModelFactory()),
     modifier: Modifier = Modifier,
     currentApiLevel: Int = -1,
     onItemClick: (SingleAPILevel) -> Unit = {}
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by apiViewModel.uiState.collectAsState()
     LazyColumn(
         modifier = modifier
             .fillMaxSize(),
