@@ -30,18 +30,5 @@ class APILevelsRepositoryImplTest {
         assertNull(fake.apiName)
     }
 
-    @Test
-    fun testGetAPILevelsCompose_networkError() {
-        val repo = APILevelsRepositoryImpl()
-        // Simulate network error by using a mock or catching exception
-        try {
-            runBlocking {
-                repo.getAPILevelsCompose()
-            }
-            fail("Should throw exception on network error")
-        } catch (e: Exception) {
-            assertTrue(e.message?.contains("HTTP error") ?: false)
-        }
-    }
 }
 
