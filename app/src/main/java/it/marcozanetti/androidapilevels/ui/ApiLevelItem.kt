@@ -96,7 +96,11 @@ fun ApiLevelItem(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = item.codeName,
+                            text = if (item.getApiLetter() != null) {
+                                item.codeName + " - " + item.getApiLetter()
+                            } else {
+                                item.codeName
+                            },
                             style = MaterialTheme.typography.body1,
                             fontWeight = FontWeight.SemiBold,
                             maxLines = 1,
@@ -157,12 +161,29 @@ fun ApiLevelItem(
 fun ApiLevelItemPreview() {
     ApiLevelItem(
         item = SingleAPILevel(
-            codeName = stringResource(id = R.string.pie),
+            codeName = stringResource(id = R.string.nougat),
             versionNumber = stringResource(id = R.string.august_6_2018),
             releaseDate = stringResource(id = R.string.august_6_2018),
             supported = true,
             apiLevelStart = 28f,
             apiLevelEnd = 28f,
+            logoResourceId = 0 // Sostituire con un drawable valido se necessario
+        ),
+        onClick = {}
+    )
+}
+
+@Preview(showBackground = true, name = "ApiLevelItem Preview Android Kitkat")
+@Composable
+fun ApiLevelItemPreviewAndroidSeven() {
+    ApiLevelItem(
+        item = SingleAPILevel(
+            codeName = "Kitkat",
+            versionNumber = stringResource(id = R.string.august_6_2018),
+            releaseDate = stringResource(id = R.string.august_6_2018),
+            supported = false,
+            apiLevelStart = 21f,
+            apiLevelEnd = 21f,
             logoResourceId = 0 // Sostituire con un drawable valido se necessario
         ),
         onClick = {}
