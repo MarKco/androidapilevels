@@ -31,10 +31,7 @@ import it.marcozanetti.androidapilevels.R
 class MainActivityCompose : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        LauncherIconManager.updateLauncherIcon(
-            context = this,
-            launchedComponentClassName = intent?.component?.className
-        )
+        LauncherIconManager.updateLauncherIcon(this)
         setContent {
             AndroidAPILevelsTheme {
                 MainScreen()

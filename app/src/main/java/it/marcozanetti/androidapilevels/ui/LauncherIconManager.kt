@@ -1,9 +1,12 @@
 package it.marcozanetti.androidapilevels.ui
 
+import android.app.Activity
+import android.app.Application
 import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Bundle
 import androidx.core.content.edit
 
 object LauncherIconManager {
@@ -26,70 +29,85 @@ object LauncherIconManager {
         33 to ".ui.MainActivityApi33Alias",
         34 to ".ui.MainActivityApi34Alias",
         35 to ".ui.MainActivityApi35Alias",
-        36 to ".ui.MainActivityApi36Alias"
+        36 to ".ui.MainActivityApi36Alias",
+        37 to ".ui.MainActivityApi37Alias",
+        38 to ".ui.MainActivityApi38Alias",
+        39 to ".ui.MainActivityApi39Alias",
+        40 to ".ui.MainActivityApi40Alias"
     )
 
     private val allAliases = listOf(DEFAULT_ALIAS) + supportedAliases.values
 
-    fun updateLauncherIcon(
-        context: Context,
-        launchedComponentClassName: String? = null
-    ) {
+    /**
+     * Updates the launcher icon based on the current API level.
+     * To avoid "closing in the face", we enable the new icon immediately but
+     * defer disabling the old one until the user leaves the app (onActivityStopped).
+     */
+    fun updateLauncherIcon(activity: Activity) {
+        val context = activity.applicationContext
         val targetAlias = supportedAliases[Build.VERSION.SDK_INT] ?: DEFAULT_ALIAS
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val previousAlias = prefs.getString(PREF_LAST_ALIAS, DEFAULT_ALIAS)
-        val keepEnabledAlias = launchedComponentClassName
-            ?.takeIf { launchedClass -> allAliases.any { alias -> launchedClass == context.packageName + alias } }
-            ?.removePrefix(context.packageName)
+        val lastAlias = prefs.getString(PREF_LAST_ALIAS, null)
 
-        if (previousAlias == targetAlias && isAliasEnabled(context, targetAlias)) {
-            // On some launchers/IDE runs the app can still be started via a previous alias.
-            // Keep that alias enabled for this run so explicit launches do not fail.
-            if (keepEnabledAlias != null && keepEnabledAlias != targetAlias) {
-                setAliasState(context, keepEnabledAlias, PackageManager.COMPONENT_ENABLED_STATE_ENABLED)
-            }
+        // If the icon is already correct and synced, do nothing
+        if (lastAlias == targetAlias && isAliasEnabled(context, targetAlias)) {
             return
         }
 
+        // 1. Enable the correct icon immediately
         setAliasState(context, targetAlias, PackageManager.COMPONENT_ENABLED_STATE_ENABLED)
-        allAliases
-            .asSequence()
-            .filter { alias ->
-                alias != targetAlias && alias != keepEnabledAlias
-            }
-            .forEach { alias ->
-                setAliasState(context, alias, PackageManager.COMPONENT_ENABLED_STATE_DISABLED)
+
+        // 2. Register a callback to disable old icons only when the app goes to background
+        activity.application.registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
+            override fun onActivityStopped(a: Activity) {
+                if (a === activity) {
+                    // User left the app. Now it's safe to disable the previous icons.
+                    // This avoids the process kill while the user is actively using the app.
+                    allAliases.forEach { alias ->
+                        if (alias != targetAlias) {
+                            setAliasState(context, alias, PackageManager.COMPONENT_ENABLED_STATE_DISABLED)
+                        }
+                    }
+                    prefs.edit { putString(PREF_LAST_ALIAS, targetAlias) }
+                    
+                    // Cleanup the callback
+                    activity.application.unregisterActivityLifecycleCallbacks(this)
+                }
             }
 
-        prefs.edit {
-            putString(PREF_LAST_ALIAS, targetAlias)
-        }
+            override fun onActivityCreated(a: Activity, b: Bundle?) {}
+            override fun onActivityStarted(a: Activity) {}
+            override fun onActivityResumed(a: Activity) {}
+            override fun onActivityPaused(a: Activity) {}
+            override fun onActivitySaveInstanceState(a: Activity, b: Bundle) {}
+            override fun onActivityDestroyed(a: Activity) {}
+        })
     }
 
     private fun isAliasEnabled(context: Context, aliasName: String): Boolean {
         val state = context.packageManager.getComponentEnabledSetting(componentName(context, aliasName))
-        return when (state) {
-            PackageManager.COMPONENT_ENABLED_STATE_ENABLED -> true
-            PackageManager.COMPONENT_ENABLED_STATE_DEFAULT -> aliasName == DEFAULT_ALIAS
-            else -> false
-        }
+        return state == PackageManager.COMPONENT_ENABLED_STATE_ENABLED || 
+               (state == PackageManager.COMPONENT_ENABLED_STATE_DEFAULT && aliasName == DEFAULT_ALIAS)
     }
 
     private fun setAliasState(context: Context, aliasName: String, newState: Int) {
         val componentName = componentName(context, aliasName)
         val packageManager = context.packageManager
-        if (packageManager.getComponentEnabledSetting(componentName) != newState) {
-            packageManager.setComponentEnabledSetting(
-                componentName,
-                newState,
-                PackageManager.DONT_KILL_APP
-            )
+        try {
+            if (packageManager.getComponentEnabledSetting(componentName) != newState) {
+                packageManager.setComponentEnabledSetting(
+                    componentName,
+                    newState,
+                    PackageManager.DONT_KILL_APP
+                )
+            }
+        } catch (e: Exception) {
+            // Ignore if alias is missing in manifest
         }
     }
 
     private fun componentName(context: Context, aliasName: String): ComponentName {
-        return ComponentName(context.packageName, context.packageName + aliasName)
+        val name = if (aliasName.startsWith(".")) context.packageName + aliasName else aliasName
+        return ComponentName(context.packageName, name)
     }
 }
-
-

@@ -23,8 +23,10 @@ data class ApiLevelsUiState(
 
 /**
  * ViewModel for the API levels screen.
+ * Annotated with @JvmOverloads to ensure a zero-arg constructor is generated
+ * for reflection-based instantiation by ViewModelProvider.
  */
-class ApiLevelsViewModel(
+class ApiLevelsViewModel @JvmOverloads constructor(
     private val repository: APILevelsRepository? = APILevelsRepositoryImpl()
 ) : ViewModel() {
 
@@ -39,11 +41,15 @@ class ApiLevelsViewModel(
     }
 
     /**
-     * Constructor for tests, using a static list of data.
+     * Named factory method for tests, using a static list of data.
      */
-    constructor(testData: List<SingleAPILevel>) : this(null) {
-        this.allItems = testData
-        _uiState.update { it.copy(isLoading = false, items = testData, hasNetworkError = false) }
+    companion object {
+        fun createForTest(testData: List<SingleAPILevel>): ApiLevelsViewModel {
+            return ApiLevelsViewModel(null).apply {
+                this.allItems = testData
+                this._uiState.update { it.copy(isLoading = false, items = testData, hasNetworkError = false) }
+            }
+        }
     }
 
     /**

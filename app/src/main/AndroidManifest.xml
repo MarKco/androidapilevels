@@ -176,6 +176,50 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
+        <activity-alias
+            android:name=".ui.MainActivityApi37Alias"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_api_37"
+            android:targetActivity=".ui.MainActivityCompose">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name=".ui.MainActivityApi38Alias"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_api_38"
+            android:targetActivity=".ui.MainActivityCompose">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name=".ui.MainActivityApi39Alias"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_api_39"
+            android:targetActivity=".ui.MainActivityCompose">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name=".ui.MainActivityApi40Alias"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_api_40"
+            android:targetActivity=".ui.MainActivityCompose">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
     </application>
 
 </manifest>

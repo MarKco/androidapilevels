@@ -12,7 +12,8 @@ class ApiLevelsViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = ApiLevelsViewModel(DefaultDataProvider.data)
+        // Use the factory method to create the ViewModel with test data
+        viewModel = ApiLevelsViewModel.createForTest(DefaultDataProvider.data)
     }
 
     @Test
