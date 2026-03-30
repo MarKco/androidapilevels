@@ -60,9 +60,14 @@ class ApiLevelsViewModel @JvmOverloads constructor(
             _uiState.update { it.copy(isLoading = true, hasNetworkError = false) }
             try {
                 val data = repository?.getAPILevelsCompose()
-                data?.let { newData ->
-                    allItems = newData
-                    _uiState.update { it.copy(isLoading = false, items = newData) }
+                data?.let { webData ->
+                    // Merge web data with DefaultDataProvider.data
+                    val webDataMap = webData.associateBy { it.apiLevelStart }
+                    val mergedList = DefaultDataProvider.data.map { defaultItem ->
+                        webDataMap[defaultItem.apiLevelStart] ?: defaultItem
+                    }
+                    allItems = mergedList
+                    _uiState.update { it.copy(isLoading = false, items = mergedList) }
                 }
             } catch (e: Exception) {
                 allItems = DefaultDataProvider.data

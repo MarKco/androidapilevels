@@ -45,8 +45,9 @@ object DefaultDataProvider {
                     SingleAPILevel("Android13", "13", "August 15, 2022", true, 33f, 33f, R.drawable.ic_android_thirteen, apiName = "TIRAMISU"),
                     SingleAPILevel("Android14", "14", "October 4, 2023", true, 34f, 34f, R.drawable.ic_android_fourteen, apiName = "UPSIDE_DOWN_CAKE"),
                     SingleAPILevel("Android15", "15", "September 3, 2024", true, 35f, 35f, R.drawable.ic_android_fifteen, apiName = "VANILLA_ICE_CREAM"),
-                    SingleAPILevel("Android16", "16", "June 10, 2025", true, 36f, 36f, R.drawable.ic_android_sixteen, apiName = null),
-                    SingleAPILevel("Android16 QPR2", "16", "December 12, 2025", true, 36.1f, 36.1f, R.drawable.ic_android_sixteen, apiName = null)
+                    SingleAPILevel("Android16", "16", "June 10, 2025", true, 36f, 36f, R.drawable.ic_android_sixteen, apiName = "BAKLAVA"),
+                    SingleAPILevel("Android16 QPR2", "16", "December 12, 2025", true, 36.1f, 36.1f, R.drawable.ic_android_sixteen, apiName = "BAKLAVA"),
+                    SingleAPILevel("Android17", "17", "2026", true, 37f, 37f, R.drawable.ic_android_seventeen, apiName = "CINNAMON_BUN")
                 )
         items.sortedByDescending { it.apiLevelStart }
     }
