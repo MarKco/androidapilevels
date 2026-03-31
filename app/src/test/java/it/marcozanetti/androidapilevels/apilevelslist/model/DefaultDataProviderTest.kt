@@ -18,7 +18,7 @@ class DefaultDataProviderTest : junit.framework.TestCase() {
     @Test
     fun testRightSizeForDefaultList() {
         assertEquals(
-            36,
+            37,
             DefaultDataProvider.data.size
         )
     }
